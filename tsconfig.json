@@ -1,0 +1,44 @@
+{
+"compilerOptions": {
+    "target": "es5",
+    "baseUrl": "./",
+    "lib": ["es6", "dom"],
+    "allowJs": true,
+    "outDir": "./dist",
+    "types": [
+    "cypress",
+    "node",
+    "cypress-time",
+    "cypress-xpath",
+    "chrome-remote-interface",
+    "cypress-real-events",
+    "cypress-grep",
+    "cypress-file-upload",
+    "cypress-wait-until"
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
+    "typeRoots": ["node_modules/@types", "typings"],
+    "skipLibCheck": true,
+    "newLine": "LF",
+    "declaration": true,
+    "inlineSources": true,
+    "esModuleInterop": true,
+    "inlineSourceMap": true
+},
+"include": [
+    "**/*.ts",
+    "**/*",
+    "**/*.js",
+    "**/*.spec.ts",
+    "../node_modules/@shelex/cypress-allure-plugin/reporter",
+    "../node_modules/cypress",
+    "cypress/support"
+],
+"exclude": ["**/dist", "**/.*/", "**/public", "**/node_modules", "./built/**/*"]
+}

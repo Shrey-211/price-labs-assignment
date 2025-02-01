@@ -1,17 +1,16 @@
 /// <reference types="cypress" />
 
-import MulticalendarPage from '../pages/multicalendarPage';
+import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 
-const multicalendar = new MulticalendarPage();
+const multiCalendar = new MultiCalendarPage();
 
 beforeEach(() => {
-  cy.login(); // Assuming a login helper exists
-  cy.visit("/multicalendar");
+  cy.login('https://pricelabs.co/signin', 'qa.pricelabs@gmail.com', 'qg33N$yxJP'); // Assuming a login helper exists
 });
 
-describe("Multicalendar DSO Tests", () => {
-    it("should allow a user to apply a Date-Specific Override (DSO)", () => {
-
+describe("MultiCalendar DSO Tests", () => {
+    it.only("should allow a user to apply a Date-Specific Override (DSO)", () => {
+      cy.log('Testing Login');
     });
 
     it("should allow a user to modify an existing DSO", () => {
