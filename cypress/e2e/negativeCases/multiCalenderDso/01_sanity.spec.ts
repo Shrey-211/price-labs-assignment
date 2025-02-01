@@ -6,7 +6,7 @@ import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { Utility } from 'cypress/support/utility';
+import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 let ListingInvalidDetails: ListingInvalidDetails
@@ -65,6 +65,20 @@ describe("MultiCalendar DSO Negative Tests", () => {
         cy.log('DSO not applied successfully, test completed');
     });
 
-    it.only("should not allow a user to modify an existing DSO with wrong values", () => {
+    it("should not allow a user to sync when sync toggle is disable", () => {
+        pricingPage.dynamicPricingButton().should('be.visible').click();
+        pricingPage.calenderViewButton().should('be.visible').click();
+        multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
+        cy.wait(5000);
+        multiCalendarPage.getFilteredProperty().should('be.visible');
+
+        // disable sync toggle
+        cy.intercept('POST', ApiEndpoints.TOGGLE_STATUS).as('toggleStatus'); // Intercepts API call to verify sync button status
+        multiCalendarPage.getSyncToggle().should('be.visible').click();
+
+        // sync the listing        
+        cy.wait('@toggleStatus').its('response.statusCode').should('eq', HttpStatus.OK);
+        multiCalendarPage.getSyncButton().should('be.visible').click();
+        multiCalendarPage.getErrorToaster().should('be.visible'); // check if the toaster is visible
     });
 });

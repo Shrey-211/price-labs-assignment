@@ -111,4 +111,9 @@ export class MultiCalendarPage {
     getSyncButton() {
         return cy.get('#mc-sync-now-VRMREALTY___144');
     }
+
+    //  Return sync toggle
+    getSyncToggle() {
+        return cy.get('.chakra-switch__track');
+    }
 }

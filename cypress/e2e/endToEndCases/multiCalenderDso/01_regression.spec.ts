@@ -57,6 +57,10 @@ describe("MultiCalendar DSO e2e Tests", () => {
         cy.log('DSO applied successfully');
         cy.intercept('POST', ApiEndpoints.SYNC_PRICES).as('syncPrices'); // Intercepts API call to verify sync
         multiCalendarPage.getSyncButton().should('be.visible').click();
-        cy.wait('@syncPrices').its('response.statusCode').should('eq', HttpStatus.OK);;
+        cy.wait('@syncPrices').its('response.statusCode').should('eq', HttpStatus.OK);
     });
+
+    it("case 2"), () => {
+        // Add test case here
+    }
 });
