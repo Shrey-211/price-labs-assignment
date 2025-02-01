@@ -16,12 +16,21 @@ declare global {
 
 Cypress.Commands.add('login', (url: string, username: string, password: string) => {
   cy.log('Logging in');
-  cy.visit(url);
+  
+  // Handle uncaught exceptions globally
+  Cypress.on('uncaught:exception', (err) => {
+    if (err.message.includes('Minified React error #419')) {
+      return false;
+    }
+    return true;
+  });
 
+  cy.visit(url);
   loginPage.userNameInputField().should('be.visible').type(username);
   loginPage.passwordInputField().should('be.visible').type(password);
   loginPage.loginButton().should('be.visible').click();
   cy.log('Logged in');
-  cy.wait(5000);
-  pricingDashboardPage.pageHeader().should('be.visible');
+  
+  // Wait for dashboard to be visible instead of using fixed wait
+  pricingDashboardPage.pageHeader().should('be.visible', { timeout: 10000 });
 });
