@@ -16,7 +16,6 @@ declare global {
 
 Cypress.Commands.add('login', (url: string, username: string, password: string) => {
   cy.log('Logging in');
-  
   // Handle uncaught exceptions globally
   Cypress.on('uncaught:exception', (err) => {
     if (err.message.includes('Minified React error #419')) {

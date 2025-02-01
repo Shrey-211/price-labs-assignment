@@ -2,11 +2,13 @@
 
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
+import { visitPriceLabs } from 'cypress/support/index';
 
 const multiCalendarPage = new MultiCalendarPage();
 const pricingPage = new PricingDashboardPage();
 
 beforeEach(() => {
+  visitPriceLabs();
   cy.login('https://pricelabs.co/signin', 'qa.pricelabs@gmail.com', 'qg33N$yxJP'); // Assuming a login helper exists
 });
 
@@ -15,16 +17,23 @@ describe("MultiCalendar DSO Tests", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
       pricingPage.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type('Christian Seasonal 2');
-      cy.contains('.chakra-text', '.Christian Seasonal 2').should('be.visible');
-      cy.wait(2000);
-      cy.get('.css-1urksmm > .css-17crack > .css-1o6y018').realClick();
-      cy.get('[qa-id="dso-modal-title"]').should('be.visible');
-      cy.get('#dso-modal-dso-price-mc').should('be.visible').type('100');
-      cy.get('#dso-modal-dso-min-price-mc').should('be.visible').type('50');
-      cy.get('#dso-modal-dso-max-price-mc').should('be.visible').type('150');
-      cy.get('#dso-base-price').should('be.visible').type('200');
-      cy.get('#custom-price-reason--mc').type('Test DSO');
-      cy.get('#add-dso').click();
+      cy.wait(5000);
+      multiCalendarPage.getFilteredProperty().should('be.visible');
+      multiCalendarPage.getMoreVertIcon().should('be.visible').click();
+      multiCalendarPage.getAddOverrideButton().should('be.visible').click();
+      multiCalendarPage.getDsoModalTitle().should('be.visible');
+      // multiCalendarPage.getDateRangeIcon().first().should('be.visible').click();
+      // multiCalendarPage.getDatePicker(9).first().should('be.visible').click();
+      multiCalendarPage.getDsoFinalPrice().should('be.visible').type('1000');
+      multiCalendarPage.getDsoMinPrice().should('be.visible').type('500');
+      multiCalendarPage.getDsoMaxPrice().should('be.visible').type('1500');
+      multiCalendarPage.getDsoBasePrice().should('be.visible').type('2000');
+      multiCalendarPage.getCustomPriceReason().type('Test DSO');
+      multiCalendarPage.getAddDsoButton().click();
+      // multiCalendarPage.getOverrideConfirmPopup().should('be.visible');
+      // multiCalendarPage.getOverrideUpdateButton().click();
+      cy.get('.css-1rh1rrp > .css-cft5qr > .css-12xei1n > .chakra-text').should('be.visible').and('have.text', 'Price: 1000 $, Base Price: 2000 $, Min Price: 500 $, Max Price: 1500 $, Reason: Test DSO');
+
     });
 
     it("should allow a user to modify an existing DSO", () => {
@@ -34,12 +43,4 @@ describe("MultiCalendar DSO Tests", () => {
     it("should allow a user to remove an existing DSO", () => {
 
     });
-
-    it("should allow a user to disable sync", () => {
-
-    })
-
-    it("should allow a user to enable sync", () => {
-
-    })
 });
