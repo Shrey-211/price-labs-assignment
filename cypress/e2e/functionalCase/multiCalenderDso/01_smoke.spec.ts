@@ -43,6 +43,12 @@ describe("MultiCalendar DSO Tests", () => {
       multiCalendarPage.getDsoBasePrice().should('be.visible').type(listingDetails.listingBasePrice);
       multiCalendarPage.getCustomPriceReason().type(listingDetails.dsoReason);
       multiCalendarPage.getAddDsoButton().click();
+      cy.get('body').then(($body) => {
+        if ($body.find('.css-bxak8j').length > 0) {
+            multiCalendarPage.getOverrideUpdateButton().click();
+            cy.log('Overriding confirmation');
+        }
+        });
       multiCalendarPage.getDsoPriceDetails()
         .should('be.visible')
         .and('have.text', `Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`);
@@ -63,6 +69,12 @@ describe("MultiCalendar DSO Tests", () => {
       multiCalendarPage.getDsoBasePrice().should('be.visible').clear().type(listingDetails.updatedListingBasePrice);
       multiCalendarPage.getCustomPriceReason().clear().type(listingDetails.updatedDsoReason);
       multiCalendarPage.getUpdateDsoButton().click();
+      cy.get('body').then(($body) => {
+        if ($body.find('.css-bxak8j').length > 0) {
+            multiCalendarPage.getOverrideUpdateButton().click();
+            cy.log('Overriding confirmation');
+        }
+        });
       multiCalendarPage.getDsoPriceDetails()
         .should('be.visible')
         .and('have.text', `Price: ${listingDetails.updatedListingFinalPrice} $, Base Price: ${listingDetails.updatedListingBasePrice} $, Min Price: ${listingDetails.updatedListingMinPrice} $, Max Price: ${listingDetails.updatedListingMaxPrice} $, Reason: ${listingDetails.updatedDsoReason}`);

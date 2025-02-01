@@ -94,7 +94,7 @@ export class MultiCalendarPage {
 
     // Return dso price details in calender view
     getDsoPriceDetails() {
-        return cy.get('.css-1rh1rrp > .css-cft5qr > .css-12xei1n > .chakra-text');
+        return cy.get('[qa-id="dso-band-text-VRMREALTY___144"]');
     }
 
     // Return Stay Restrictions header
@@ -102,9 +102,13 @@ export class MultiCalendarPage {
         return cy.get('.css-1dxpwlh');
     }
 
-    // return toaster 
+    // Return toaster 
     getErrorToaster() {
         return cy.get('div[data-status="error"].chakra-alert__desc');
     }
 
+    // Return sync button
+    getSyncButton() {
+        return cy.get('#mc-sync-now-VRMREALTY___144');
+    }
 }
