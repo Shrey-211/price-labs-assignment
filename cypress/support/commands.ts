@@ -1,7 +1,7 @@
 export {}; // This makes the file a module
 
 import { LoginPage } from 'cypress/pageObjects/loginPage/loginPage.page';
-import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingdashboardPage.page';
+import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 
 const pricingDashboardPage = new PricingDashboardPage();
 const loginPage = new LoginPage();
