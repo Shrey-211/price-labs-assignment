@@ -97,5 +97,14 @@ export class MultiCalendarPage {
         return cy.get('.css-1rh1rrp > .css-cft5qr > .css-12xei1n > .chakra-text');
     }
 
+    // Return Stay Restrictions header
+    getStayRestrictionsHeader() {
+        return cy.get('.css-1dxpwlh');
+    }
+
+    // return toaster 
+    getErrorToaster() {
+        return cy.get('div[data-status="error"].chakra-alert__desc');
+    }
 
 }

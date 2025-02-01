@@ -24,7 +24,7 @@ before(() => {
 
 beforeEach(() => {
   visitPriceLabs();
-  cy.login(loginUrl, loginDetails.username, loginDetails.password); // Assuming a login helper exists
+  cy.login(loginUrl, loginDetails.username, loginDetails.password);
 });
 
 describe("MultiCalendar DSO Tests", () => {
@@ -66,7 +66,8 @@ describe("MultiCalendar DSO Tests", () => {
       multiCalendarPage.getDsoPriceDetails()
         .should('be.visible')
         .and('have.text', `Price: ${listingDetails.updatedListingFinalPrice} $, Base Price: ${listingDetails.updatedListingBasePrice} $, Min Price: ${listingDetails.updatedListingMinPrice} $, Max Price: ${listingDetails.updatedListingMaxPrice} $, Reason: ${listingDetails.updatedDsoReason}`);
-    });
+      cy.log('DSO updated successfully, test completed');
+      });
 
     it("should allow a user to remove an existing DSO", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
@@ -77,5 +78,6 @@ describe("MultiCalendar DSO Tests", () => {
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       multiCalendarPage.getDeleteDsoButton().click();
       multiCalendarPage.getDsoPriceDetails().should('not.exist');
+      cy.log('DSO removed successfully, test completed');
     });
 });
