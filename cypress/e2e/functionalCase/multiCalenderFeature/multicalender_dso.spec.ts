@@ -1,23 +1,30 @@
 /// <reference types="cypress" />
 
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
+import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
+import { Utility } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
+let loginDetails: User
 const multiCalendarPage = new MultiCalendarPage();
 const pricingPage = new PricingDashboardPage();
+const loginUrl = new Utility().getBaseLoginUrl();
 
 before(() => {
   cy.fixture('listingDetails/listing_details').then((listingDetail) => {
     listingDetails = listingDetail;
   });
+  cy.fixture('loginDetails/login_details').then((loginDetail) => {
+    loginDetails = loginDetail.validUser;
+  });
 });
 
 beforeEach(() => {
   visitPriceLabs();
-  cy.login('https://pricelabs.co/signin', 'qa.pricelabs@gmail.com', 'qg33N$yxJP'); // Assuming a login helper exists
+  cy.login(loginUrl, loginDetails.username, loginDetails.password); // Assuming a login helper exists
 });
 
 describe("MultiCalendar DSO Tests", () => {
