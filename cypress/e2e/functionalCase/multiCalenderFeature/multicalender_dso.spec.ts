@@ -1,11 +1,19 @@
 /// <reference types="cypress" />
 
+import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
 
+let listingDetails: ListingDetails
 const multiCalendarPage = new MultiCalendarPage();
 const pricingPage = new PricingDashboardPage();
+
+before(() => {
+  cy.fixture('listingDetails/listing_details').then((listingDetail) => {
+    listingDetails = listingDetail;
+  });
+});
 
 beforeEach(() => {
   visitPriceLabs();
@@ -16,25 +24,24 @@ describe("MultiCalendar DSO Tests", () => {
     it.only("should allow a user to apply a Date-Specific Override (DSO)", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
       pricingPage.calenderViewButton().should('be.visible').click();
-      multiCalendarPage.getSearchBar().should('be.visible').type('Christian Seasonal 2');
+      multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getFilteredProperty().should('be.visible');
       multiCalendarPage.getMoreVertIcon().should('be.visible').click();
       multiCalendarPage.getAddOverrideButton().should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
-      // multiCalendarPage.getDateRangeIcon().first().should('be.visible').click();
-      // multiCalendarPage.getDatePicker(9).first().should('be.visible').click();
-      multiCalendarPage.getDsoFinalPrice().should('be.visible').type('1000');
-      multiCalendarPage.getDsoMinPrice().should('be.visible').type('500');
-      multiCalendarPage.getDsoMaxPrice().should('be.visible').type('1500');
-      multiCalendarPage.getDsoBasePrice().should('be.visible').type('2000');
-      multiCalendarPage.getCustomPriceReason().type('Test DSO');
+      multiCalendarPage.getDsoFinalPrice().should('be.visible').type(listingDetails.listingFinalPrice);
+      multiCalendarPage.getDsoMinPrice().should('be.visible').type(listingDetails.ListingMinimumPrice);
+      multiCalendarPage.getDsoMaxPrice().should('be.visible').type(listingDetails.ListingMaxPrice);
+      multiCalendarPage.getDsoBasePrice().should('be.visible').type(listingDetails.listingBasePrice);
+      multiCalendarPage.getCustomPriceReason().type(listingDetails.dsoReason);
       multiCalendarPage.getAddDsoButton().click();
-      // multiCalendarPage.getOverrideConfirmPopup().should('be.visible');
-      // multiCalendarPage.getOverrideUpdateButton().click();
-      cy.get('.css-1rh1rrp > .css-cft5qr > .css-12xei1n > .chakra-text').should('be.visible').and('have.text', 'Price: 1000 $, Base Price: 2000 $, Min Price: 500 $, Max Price: 1500 $, Reason: Test DSO');
-
-    });
+      multiCalendarPage.getDsoPriceDetails()
+        .should('be.visible')
+        .and('have.text', `Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.ListingMinimumPrice} $, Max Price: ${listingDetails.ListingMaxPrice} $, Reason: ${listingDetails.dsoReason}`);
+    
+      cy.log('DSO applied successfully, test completed');
+      });
 
     it("should allow a user to modify an existing DSO", () => {
 

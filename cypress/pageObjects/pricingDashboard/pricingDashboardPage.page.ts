@@ -6,7 +6,7 @@ export class PricingDashboardPage {
 
     // Return dynamic pricing button drop down
     public dynamicPricingButton() {
-        return cy.get('#menu-button-\\:R6t2nldaH1\\:'); 
+        return cy.get('.css-1ai65wj'); 
     }
 
     // Return calender view button

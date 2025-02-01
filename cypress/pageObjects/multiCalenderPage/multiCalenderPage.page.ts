@@ -82,4 +82,10 @@ export class MultiCalendarPage {
         return cy.get(`.react-datepicker__day--${val}`);
     }
 
+    // Return dso price details in calender view
+    getDsoPriceDetails() {
+        return cy.get('.css-1rh1rrp > .css-cft5qr > .css-12xei1n > .chakra-text');
+    }
+
+
 }
