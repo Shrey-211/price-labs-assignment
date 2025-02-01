@@ -46,6 +46,16 @@ export class MultiCalendarPage {
         return cy.get('#add-dso');
     }
 
+    // Return update DSo button
+    getUpdateDsoButton() {
+        return cy.get('#update-dso');
+    }
+
+    // Return delete DSO button
+    getDeleteDsoButton() {
+        return cy.get('#remove-dso-btn');
+    }
+
     // Return Filtered property
     getFilteredProperty() {
         return cy.get('.css-1kh6bo9');

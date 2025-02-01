@@ -2,7 +2,12 @@
     "listingName": "Christian Seasonal 2",
     "listingBasePrice": "100",
     "dsoReason": "This is a assignment by Shreyas Jadhav",
-    "ListingMinimumPrice": "500",
-    "ListingMaxPrice": "1000",
-    "listingFinalPrice": "800"
+    "listingMinPrice": "500",
+    "listingMaxPrice": "1000",
+    "listingFinalPrice": "800",
+    "updatedListingBasePrice": "200",
+    "updatedListingMinPrice": "600",
+    "updatedListingMaxPrice": "1100",
+    "updatedListingFinalPrice": "800",
+    "updatedDsoReason": "This is a assignment by Shreyas Jadhav updated"
 }
