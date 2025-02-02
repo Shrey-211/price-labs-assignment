@@ -55,7 +55,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getAddTagContainerHeader().should('be.visible');
         manageListingsPage.getAddTagContainerInput().should('be.visible').type('Test Tag');
         manageListingsPage.getAddTagContainerCreateButton().should('be.visible').click();
-        manageListingsPage.getTagToastMessage().should('be.visible');
+        manageListingsPage.getToastMessage().should('be.visible');
         manageListingsPage.getAddedTag('Test Tag').should('be.visible');
         cy.log('Tag added successfully, test completed');
     });
@@ -69,7 +69,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         manageListingsPage.getAddedTag('Test Tag').should('be.visible').click();
-        manageListingsPage.getTagToastMessage().should('be.visible');
+        manageListingsPage.getToastMessage().should('be.visible');
         manageListingsPage.getAddedTag('Test Tag').should('be.exist');
         cy.get('body').then(($body) => {
             if ($body.find(`[data-tag-name="Test Tag"]`).length > 0) {

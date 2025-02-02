@@ -71,13 +71,68 @@ export class ManageListingsPage {
     }
 
     // return tag added toast message
-    getTagToastMessage() {
+    getToastMessage() {
         return cy.get('.toast-message');
     }
 
     // Return added tag
     getAddedTag(tagName: string) {
         return cy.get(`[data-tag-name="${tagName}"]`);
+    }
+
+    // Return checkbox for listing
+    getListingCheckbox() {
+        return cy.get('#unmapped-table > thead > tr > .bs-checkbox > .th-inner > label > input');
+    }
+
+    // Return Assign Group/Sub-group button
+    getAssignGroupSubGroupButton() {
+        return cy.get('#assign-group-mapping');
+    }
+
+    // Return Assign Group/Sub-group container header
+    getAssignGroupSubGroupContainerHeader() {
+        return cy.get('#add-group-modal > .modal-dialog > .modal-content > .modal-header > .m-0');
+    }
+
+    // Return Assign Group dropdown
+    getAssignGroupDropdown() {
+        return cy.get('#group-cust-select-form-group > .dropdown > .btn');
+    }
+
+    // Return Assign Sub-group dropdown
+    getAssignSubGroupDropdown() {
+        return cy.get('#group-cust-select-form-subgroup > .dropdown > .btn');
+    }
+
+    // Return dropdown options
+    getGroupDropdownOptions(groupName: string) {
+        return cy.contains('.text', groupName);
+    }
+
+    // Return sub-group dropdown options
+    getSubGroupDropdownOptions() {
+        return cy.get('#bs-select-32-5');
+    }
+
+    // Return update button
+    getUpdateButton() {
+        return cy.get('#add-groups-btn');
+    }
+
+    // Return search box for group dropdown
+    getGroupSearchBox() {
+        return cy.get('#group-cust-select-form-group > .dropdown > div.dropdown-menu > .bs-searchbox > .form-control');
+    }
+
+    // return search box for sub-group dropdown
+    getSubGroupSearchBox() {
+        return cy.get('#group-cust-select-form-subgroup > .dropdown > div.dropdown-menu > .bs-searchbox > .form-control');
+    }
+
+    // Return Customization group value in table
+    getCustomizationGroupValue() {
+        return cy.contains('.filter-option-inner-inner', 'Nothing Selected');
     }
 
 }
