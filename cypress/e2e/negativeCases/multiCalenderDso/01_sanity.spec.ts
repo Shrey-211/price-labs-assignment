@@ -2,7 +2,6 @@
 
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
 import { ListingInvalidDetails } from 'cypress/fixtures/listingDetails/invalid_listing_details.interface';
-import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
@@ -10,10 +9,11 @@ import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.p
 
 let listingDetails: ListingDetails
 let ListingInvalidDetails: ListingInvalidDetails
-let loginDetails: User
 const multiCalendarPage = new MultiCalendarPage();
 const navigationTab = new NavigationTab();
-const loginUrl = new Utility().getBaseLoginUrl();
+const loginUrl = Cypress.env('baseUrl') as string;
+const username = Cypress.env('username') as string;
+const password = Cypress.env('password') as string;
 
 before(() => {
     cy.fixture('listingDetails/listing_details').then((listingDetail) => {
@@ -22,14 +22,11 @@ before(() => {
     cy.fixture('listingDetails/invalid_listing_details').then((listingInvalidDetail) => {
         ListingInvalidDetails = listingInvalidDetail;
     });
-    cy.fixture('loginDetails/login_details').then((loginDetail) => {
-        loginDetails = loginDetail.validUser;
-    });
 });
 
 beforeEach(() => {
     visitPriceLabs();
-    cy.login(loginUrl, loginDetails.username, loginDetails.password);
+    cy.login(loginUrl, username, password);
 });
 
 describe("MultiCalendar DSO Negative Test Flows", () => {

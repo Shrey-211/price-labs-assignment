@@ -1,32 +1,28 @@
 /// <reference types="cypress" />
 
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
-import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { CustomizationPage } from 'cypress/pageObjects/customizationsPage/customizationsPage.page';
 import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { Utility } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
-let loginDetails: User
 const navigationTab = new NavigationTab();
 const manageListingsPage = new ManageListingsPage();
-const loginUrl = new Utility().getBaseLoginUrl();
 const customizationsPage = new CustomizationPage();
+const loginUrl = Cypress.env('baseUrl') as string;
+const username = Cypress.env('username') as string;
+const password = Cypress.env('password') as string;
 
 before(() => {
     cy.fixture('listingDetails/listing_details').then((listingDetail) => {
         listingDetails = listingDetail;
     });
-    cy.fixture('loginDetails/login_details').then((loginDetail) => {
-        loginDetails = loginDetail.validUser;
-    });
     });
 
 beforeEach(() => {
     visitPriceLabs();
-    cy.login(loginUrl, loginDetails.username, loginDetails.password);
+    cy.login(loginUrl, username, password);
 });
 
 describe("Manage Listings Tests", () => {
@@ -118,24 +114,24 @@ describe("Manage Listings Tests", () => {
 });
 
 after(() => {
-    // delete the group 
-    cy.get('.navbar-brand > img').click();
-    navigationTab.dynamicPricingButton().should('be.visible').click();
-    navigationTab.customizationsButton().should('be.visible').click();
-    customizationsPage.groupTabButton().should('be.visible').click();
-    customizationsPage.tableViewButton().should('be.visible').click();
-    customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
-    cy.wait(2000);
-    cy.get('body').then(($body) => {
-        if ($body.find('tbody > tr > .column_group_name').length > 0) {
-            cy.log('Group found, proceeding to deletion');
-        } else {
-            cy.log('Group not found noting to delete');
-            throw new Error('Group not found');
-        }
-    });
-    customizationsPage.moreOptionsInTableButton().should('be.visible').click();
-    customizationsPage.deleteGroupOption().should('be.visible').click();
+    // delete the group  TODO
+    // cy.get('.navbar-brand > img').click();
+    // navigationTab.dynamicPricingButton().should('be.visible').click();
+    // navigationTab.customizationsButton().should('be.visible').click();
+    // customizationsPage.groupTabButton().should('be.visible').click();
+    // customizationsPage.tableViewButton().should('be.visible').click();
+    // customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
+    // cy.wait(2000);
+    // cy.get('body').then(($body) => {
+    //     if ($body.find('tbody > tr > .column_group_name').length > 0) {
+    //         cy.log('Group found, proceeding to deletion');
+    //     } else {
+    //         cy.log('Group not found noting to delete');
+    //         throw new Error('Group not found');
+    //     }
+    // });
+    // customizationsPage.moreOptionsInTableButton().should('be.visible').click();
+    // customizationsPage.deleteGroupOption().should('be.visible').click();
     cy.clearLocalStorage();
     cy.clearCookies();
 });

@@ -23,6 +23,9 @@ module.exports = defineConfig({
     experimentalSessionAndOrigin: false,
     reporter: 'cypress-mochawesome-reporter',
     env: {
+      baseUrl: 'https://pricelabs.co/signin',
+      username: 'qa.pricelabs@gmail.com',
+      password: 'qg33N$yxJP',
       allure: true,
     },
     reporterOptions: {

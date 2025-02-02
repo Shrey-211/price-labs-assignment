@@ -1,30 +1,26 @@
 /// <reference types="cypress" />
 
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
-import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
-let loginDetails: User
 const multiCalendarPage = new MultiCalendarPage();
 const navigationTab = new NavigationTab();
-const loginUrl = new Utility().getBaseLoginUrl();
+const loginUrl = Cypress.env('baseUrl') as string;
+const username = Cypress.env('username') as string;
+const password = Cypress.env('password') as string;
 
 before(() => {
   cy.fixture('listingDetails/listing_details').then((listingDetail) => {
     listingDetails = listingDetail;
   });
-  cy.fixture('loginDetails/login_details').then((loginDetail) => {
-    loginDetails = loginDetail.validUser;
-  });
 });
 
 beforeEach(() => {
   visitPriceLabs();
-  cy.login(loginUrl, loginDetails.username, loginDetails.password);
+  cy.login(loginUrl, username, password);
 });
 
 describe("MultiCalendar DSO Tests", () => {
