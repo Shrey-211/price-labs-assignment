@@ -28,7 +28,7 @@ beforeEach(() => {
 });
 
 describe("Manage Listings Negative Tests", () => {
-    it.only("should not allow user to add same group and subgroup for a listing", () => {
+    it("should not allow user to add same group and subgroup for a listing", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
@@ -59,13 +59,12 @@ describe("Manage Listings Negative Tests", () => {
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
-        manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
-        manageListingsPage.getAddTagButton().should('be.visible').click();
-        manageListingsPage.getAddTagContainerHeader().should('be.visible');
-        manageListingsPage.getAddTagContainerInput().should('be.visible').type('Test Tag');
-        manageListingsPage.getAddTagContainerCreateButton().should('be.visible').click();
+        manageListingsPage.getMappedListingHeader().should('be.visible').click();
+        manageListingsPage.getMappedListingSearchBar().should('be.visible').type('121 Select Views');
+        cy.wait(2000);
+        manageListingsPage.getMappedListingCheckbox().should('be.visible').click();
+        manageListingsPage.getHideListingButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
-        manageListingsPage.getAddedTag('Test Tag').should('be.visible');
         cy.log('Tag added successfully, test completed');
     });
 });

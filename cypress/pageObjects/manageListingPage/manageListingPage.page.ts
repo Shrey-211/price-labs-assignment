@@ -135,4 +135,20 @@ export class ManageListingsPage {
         return cy.contains('.filter-option-inner-inner', 'Nothing Selected');
     }
 
+    // Return mapped listing search bar
+    getMappedListingSearchBar() {
+        return cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control');
+    }
+
+    // Return mapped listings check box
+    getMappedListingCheckbox() {
+        return cy.get('#mapped-table > thead > tr > .bs-checkbox > .th-inner > label > input');
+    }
+
+    // Return hide listing button
+    getHideListingButton() {
+        return cy.get('#show-group-mapping');
+    }
+
+
 }
