@@ -48,7 +48,7 @@ describe("Manage Listings Negative Tests", () => {
         manageListingsPage.getSubGroupDropdownOptions().should('be.visible').click();
         manageListingsPage.getUpdateButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
-        manageListingsPage.getCustomizationGroupValue().should('be.visible');
+        manageListingsPage.getCustomizationGroupValue('Nothing Selected').should('be.visible');
         cy.log('User was not able to add same group and sub group, test completed');
     });
 

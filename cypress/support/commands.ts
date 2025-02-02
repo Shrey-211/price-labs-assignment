@@ -3,6 +3,7 @@ export {}; // This makes the file a module
 import { LoginPage } from 'cypress/pageObjects/loginPage/loginPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 import { HttpStatus } from './utility';
+import 'cypress-iframe';
 
 const pricingDashboardPage = new PricingDashboardPage();
 const loginPage = new LoginPage();

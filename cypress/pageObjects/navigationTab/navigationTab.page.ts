@@ -13,4 +13,9 @@ export class NavigationTab {
     public manageListingButton() {
         return cy.contains('.css-23zmd7', 'Manage Listings');
     }
+
+    // Return customizations button
+    public customizationsButton() {
+        return cy.contains('.css-23zmd7', 'Customizations');
+    }
 }

@@ -131,8 +131,8 @@ export class ManageListingsPage {
     }
 
     // Return Customization group value in table
-    getCustomizationGroupValue() {
-        return cy.contains('.filter-option-inner-inner', 'Nothing Selected');
+    getCustomizationGroupValue(val: string) {
+        return cy.contains('.filter-option-inner-inner', `${val}`);
     }
 
     // Return mapped listing search bar
@@ -150,5 +150,8 @@ export class ManageListingsPage {
         return cy.get('#show-group-mapping');
     }
 
-
+    // Return add group button in table
+    getAddGroupButton() {
+        return cy.get('#tr-VRMREALTY___144 > .column_customize_group > .dropdown > .btn');
+    }
 }
