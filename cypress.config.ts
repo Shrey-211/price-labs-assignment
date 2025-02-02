@@ -1,10 +1,12 @@
 const { defineConfig } = require("cypress");
 const allureWriter = require('@shelex/cypress-allure-plugin/writer');
+const mochawesome = require('cypress-mochawesome-reporter/plugin');
 
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       allureWriter(on, config);
+      mochawesome(on);
       return config;
     },
     fixturesFolder: './cypress/fixtures',
@@ -19,7 +21,10 @@ module.exports = defineConfig({
     chromeWebSecurity: false,
     watchForFileChanges: false,
     experimentalSessionAndOrigin: false,
-    reporter: "mochawesome",
+    reporter: 'cypress-mochawesome-reporter',
+    env: {
+      allure: true,
+    },
     reporterOptions: {
       reportDir: "cypress/reports",
       overwrite: false,
