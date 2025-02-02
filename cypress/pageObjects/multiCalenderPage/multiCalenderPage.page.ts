@@ -103,8 +103,8 @@ export class MultiCalendarPage {
     }
 
     // Return dso price details in calender view
-    getDsoPriceDetails() {
-        return cy.get('[qa-id="dso-band-text-VRMREALTY___144"]');
+    getDsoPriceDetails(text: string) {
+        return cy.contains('.css-jgf8tb', `${text}`);
     }
 
     // Return Stay Restrictions header

@@ -11,9 +11,6 @@ export class PricingDashboardPage {
 
     // Return calender view button
     public calenderViewButton() {
-        return cy.get('a[href="/multicalendar"]');
+        return cy.contains('.css-23zmd7', 'Multi Calendar');
     }
-
-
-
 }

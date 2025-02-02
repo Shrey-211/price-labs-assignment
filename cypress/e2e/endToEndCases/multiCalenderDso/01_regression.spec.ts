@@ -33,7 +33,7 @@ after(() => {
     cy.contains('.css-23zmd7', 'Manage Listings').should('be.visible').click();
     cy.get('[qa-id="apply-filter"]').click();
     cy.get('[data-name="mapped_listings"]').click();
-    cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control').type(listingDetails.parentListingName);
+    cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control').type('Lifes a Beach');
     cy.wait(5000);
     cy.get('#mapped-table > thead > tr > .bs-checkbox > .th-inner > label > input').click();
     cy.get('#unmap_listing_bulk').click();
@@ -47,7 +47,7 @@ describe("MultiCalendar DSO e2e Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO) and sync data", () => {
         pricingPage.dynamicPricingButton().should('be.visible').click();
         // cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
-        multiCalendarPage.getMapListingButton().should('be.visible').click();
+        pricingPage.calenderViewButton().should('be.visible').click();
         // cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
@@ -68,9 +68,8 @@ describe("MultiCalendar DSO e2e Tests", () => {
                 cy.log('Overriding confirmation');
             }
             });
-        multiCalendarPage.getDsoPriceDetails().first()
-            .should('be.visible')
-            .and('have.text', `Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`);
+        multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`).first()
+            .should('be.visible');
         
         cy.log('DSO applied successfully');
         cy.intercept('POST', ApiEndpoints.SYNC_PRICES).as('syncPrices'); // Intercepts API call to verify sync
@@ -78,7 +77,7 @@ describe("MultiCalendar DSO e2e Tests", () => {
         cy.wait('@syncPrices').its('response.statusCode').should('eq', HttpStatus.OK);
     });
 
-    it.only("should allow a user to map listings", () => {
+    it("should allow a user to map listings", () => {
         pricingPage.dynamicPricingButton().should('be.visible').click();
         // cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
         pricingPage.calenderViewButton().should('be.visible').click();

@@ -1,9 +1,11 @@
 const { defineConfig } = require("cypress");
+const allureWriter = require('@shelex/cypress-allure-plugin/writer');
 
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      allureWriter(on, config);
+      return config;
     },
     fixturesFolder: './cypress/fixtures',
     supportFile: './cypress/support/e2e.ts',
@@ -16,6 +18,13 @@ module.exports = defineConfig({
     requestTimeout: 50000,
     chromeWebSecurity: false,
     watchForFileChanges: false,
-    experimentalSessionAndOrigin: false
+    experimentalSessionAndOrigin: false,
+    reporter: "mochawesome",
+    reporterOptions: {
+      reportDir: "cypress/reports",
+      overwrite: false,
+      html: false,
+      json: true,
+    },
   },
 });

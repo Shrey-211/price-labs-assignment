@@ -14,4 +14,14 @@ export class LoginPage {
     loginButton() {
         return cy.get('input[name="commit"]');
     }
+
+    // Return Price Labs Logo
+    priceLabsLogo() {
+        return cy.get('img');
+    }
+
+    // Return Login Header
+    loginHeader() {
+        return cy.get('strong');
+    }
 }

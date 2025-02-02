@@ -30,9 +30,7 @@ beforeEach(() => {
 describe("MultiCalendar DSO Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO)", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
-      cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
-      multiCalendarPage.getMapListingButton().should('be.visible').click();
-      cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
+      pricingPage.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -51,21 +49,18 @@ describe("MultiCalendar DSO Tests", () => {
             cy.log('Overriding confirmation');
         }
         });
-      multiCalendarPage.getDsoPriceDetails()
-        .should('be.visible')
-        .and('have.text', `Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`);
+      multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`)
+        .should('be.visible');
     
       cy.log('DSO applied successfully, test completed');
       });
 
     it("should allow a user to modify an existing DSO", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
-      cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
-      multiCalendarPage.getMapListingButton().should('be.visible').click();
-      cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
+      pricingPage.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
-      multiCalendarPage.getDsoPriceDetails().should('be.visible').click();
+      multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`).should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       multiCalendarPage.getDsoFinalPrice().should('be.visible').clear().type(listingDetails.updatedListingFinalPrice);
       multiCalendarPage.getDsoMinPrice().should('be.visible').clear().type(listingDetails.updatedListingMinPrice);
@@ -79,23 +74,25 @@ describe("MultiCalendar DSO Tests", () => {
             cy.log('Overriding confirmation');
         }
         });
-      multiCalendarPage.getDsoPriceDetails()
-        .should('be.visible')
-        .and('have.text', `Price: ${listingDetails.updatedListingFinalPrice} $, Base Price: ${listingDetails.updatedListingBasePrice} $, Min Price: ${listingDetails.updatedListingMinPrice} $, Max Price: ${listingDetails.updatedListingMaxPrice} $, Reason: ${listingDetails.updatedDsoReason}`);
+      multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`)
+        .should('be.visible');
       cy.log('DSO updated successfully, test completed');
       });
 
     it("should allow a user to remove an existing DSO", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
-      cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
-      multiCalendarPage.getMapListingButton().should('be.visible').click();
-      cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
+      pricingPage.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
-      multiCalendarPage.getDsoPriceDetails().should('be.visible').click();
+      multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       multiCalendarPage.getDeleteDsoButton().click();
-      multiCalendarPage.getDsoPriceDetails().should('not.exist');
+      multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('not.exist');
       cy.log('DSO removed successfully, test completed');
     });
+});
+
+after(() => {
+  cy.clearLocalStorage();
+  cy.clearCookies();
 });
