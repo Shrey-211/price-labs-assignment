@@ -70,7 +70,6 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         manageListingsPage.getAddedTag('Test Tag').should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
-        manageListingsPage.getAddedTag('Test Tag').should('be.exist');
         cy.get('body').then(($body) => {
             if ($body.find(`[data-tag-name="Test Tag"]`).length > 0) {
                 cy.log('Failed to removed tag, test failed');

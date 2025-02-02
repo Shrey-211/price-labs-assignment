@@ -31,44 +31,6 @@ describe("Manage Listings Tests", () => {
     it("should allow a user to create a new customization group and sub-group and add to the listing", () => {
         cy.log('Customization group and sub-group added, test completed');
     });
-
-    it("should allow a user to add tag to the listing", () => {
-        navigationTab.dynamicPricingButton().should('be.visible').click();
-        navigationTab.manageListingButton().should('be.visible').click();
-        manageListingsPage.getManageListingsFilterHeader().should('be.visible');
-        manageListingsPage.getFilterCloseButton().should('be.visible').click();
-        manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
-        manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
-        manageListingsPage.getAddTagButton().should('be.visible').click();
-        manageListingsPage.getAddTagContainerHeader().should('be.visible');
-        manageListingsPage.getAddTagContainerInput().should('be.visible').type('Test Tag');
-        manageListingsPage.getAddTagContainerCreateButton().should('be.visible').click();
-        manageListingsPage.getToastMessage().should('be.visible');
-        manageListingsPage.getAddedTag('Test Tag').should('be.visible');
-        cy.log('Tag added successfully, test completed');
-    });
-
-    it("should allow a remove an existing tag", () => {
-        navigationTab.dynamicPricingButton().should('be.visible').click();
-        navigationTab.manageListingButton().should('be.visible').click();
-        manageListingsPage.getManageListingsFilterHeader().should('be.visible');
-        manageListingsPage.getFilterCloseButton().should('be.visible').click();
-        manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
-        manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
-        manageListingsPage.getAddedTag('Test Tag').should('be.visible').click();
-        manageListingsPage.getToastMessage().should('be.visible');
-        manageListingsPage.getAddedTag('Test Tag').should('be.exist');
-        cy.get('body').then(($body) => {
-            if ($body.find(`[data-tag-name="Test Tag"]`).length > 0) {
-                cy.log('Failed to removed tag, test failed');
-                throw new Error('Failed to remove tag');
-            } else {
-                cy.log('tag removed successfully, test completed');
-            }
-        });
-    });
 });
 
 after(() => {
