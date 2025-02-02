@@ -3,15 +3,15 @@
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
 import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
-import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
+import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { HttpStatus, Utility, ApiEndpoints} from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 let loginDetails: User
 const multiCalendarPage = new MultiCalendarPage();
-const pricingPage = new PricingDashboardPage();
 const loginUrl = new Utility().getBaseLoginUrl();
+const navigationTab = new NavigationTab();
 
 before(() => {
     cy.fixture('listingDetails/listing_details').then((listingDetail) => {
@@ -29,8 +29,8 @@ beforeEach(() => {
 
 // Unmap the listings after the test
 after(() => {
-    pricingPage.dynamicPricingButton().should('be.visible').click();
-    cy.contains('.css-23zmd7', 'Manage Listings').should('be.visible').click();
+    navigationTab.dynamicPricingButton().should('be.visible').click();
+    navigationTab.manageListingButton().should('be.visible').click();
     cy.get('[qa-id="apply-filter"]').click();
     cy.get('[data-name="mapped_listings"]').click();
     cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control').type('Lifes a Beach');
@@ -45,10 +45,8 @@ after(() => {
 
 describe("MultiCalendar DSO e2e Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO) and sync data", () => {
-        pricingPage.dynamicPricingButton().should('be.visible').click();
-        // cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
-        pricingPage.calenderViewButton().should('be.visible').click();
-        // cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
+        navigationTab.dynamicPricingButton().should('be.visible').click();
+        navigationTab.calenderViewButton().should('be.visible').click();
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -78,11 +76,9 @@ describe("MultiCalendar DSO e2e Tests", () => {
     });
 
     it("should allow a user to map listings", () => {
-        pricingPage.dynamicPricingButton().should('be.visible').click();
-        // cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
-        pricingPage.calenderViewButton().should('be.visible').click();
+        navigationTab.dynamicPricingButton().should('be.visible').click();
+        navigationTab.calenderViewButton().should('be.visible').click();
         cy.wait(5000);
-        // cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
         multiCalendarPage.getMapListingButton().should('be.visible').click();
         multiCalendarPage.getMapListingHeader().should('be.visible');
         multiCalendarPage.parentListingDropdown().should('be.visible').click();

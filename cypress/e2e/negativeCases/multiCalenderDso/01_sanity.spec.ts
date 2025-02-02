@@ -4,15 +4,15 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { ListingInvalidDetails } from 'cypress/fixtures/listingDetails/invalid_listing_details.interface';
 import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
-import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
+import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 
 let listingDetails: ListingDetails
 let ListingInvalidDetails: ListingInvalidDetails
 let loginDetails: User
 const multiCalendarPage = new MultiCalendarPage();
-const pricingPage = new PricingDashboardPage();
+const navigationTab = new NavigationTab();
 const loginUrl = new Utility().getBaseLoginUrl();
 
 before(() => {
@@ -34,8 +34,8 @@ beforeEach(() => {
 
 describe("MultiCalendar DSO Negative Test Flows", () => {
     it("should not allow a user to apply a Date-Specific Override (DSO) with negative values", () => {
-        pricingPage.dynamicPricingButton().should('be.visible').click();
-        pricingPage.calenderViewButton().should('be.visible').click();
+        navigationTab.dynamicPricingButton().should('be.visible').click();
+        navigationTab.calenderViewButton().should('be.visible').click();
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -66,8 +66,8 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
     });
 
     it("should not allow a user to sync when sync toggle is disable", () => {
-        pricingPage.dynamicPricingButton().should('be.visible').click();
-        pricingPage.calenderViewButton().should('be.visible').click();
+        navigationTab.dynamicPricingButton().should('be.visible').click();
+        navigationTab.calenderViewButton().should('be.visible').click();
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');

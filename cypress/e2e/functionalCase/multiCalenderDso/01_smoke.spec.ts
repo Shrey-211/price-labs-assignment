@@ -3,14 +3,14 @@
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
 import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
-import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
+import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 let loginDetails: User
 const multiCalendarPage = new MultiCalendarPage();
-const pricingPage = new PricingDashboardPage();
+const navigationTab = new NavigationTab();
 const loginUrl = new Utility().getBaseLoginUrl();
 
 before(() => {
@@ -29,8 +29,8 @@ beforeEach(() => {
 
 describe("MultiCalendar DSO Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO)", () => {
-      pricingPage.dynamicPricingButton().should('be.visible').click();
-      pricingPage.calenderViewButton().should('be.visible').click();
+      navigationTab.dynamicPricingButton().should('be.visible').click();
+      navigationTab.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -56,8 +56,8 @@ describe("MultiCalendar DSO Tests", () => {
       });
 
     it("should allow a user to modify an existing DSO", () => {
-      pricingPage.dynamicPricingButton().should('be.visible').click();
-      pricingPage.calenderViewButton().should('be.visible').click();
+      navigationTab.dynamicPricingButton().should('be.visible').click();
+      navigationTab.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`).should('be.visible').click();
@@ -80,8 +80,8 @@ describe("MultiCalendar DSO Tests", () => {
       });
 
     it("should allow a user to remove an existing DSO", () => {
-      pricingPage.dynamicPricingButton().should('be.visible').click();
-      pricingPage.calenderViewButton().should('be.visible').click();
+      navigationTab.dynamicPricingButton().should('be.visible').click();
+      navigationTab.calenderViewButton().should('be.visible').click();
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('be.visible').click();
