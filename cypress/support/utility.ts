@@ -17,5 +17,6 @@ export enum HttpStatus {
 
 export enum ApiEndpoints {
     SYNC_PRICES = '/api/sync_prices*',
-    TOGGLE_STATUS = '/api/push_price_status*'
+    TOGGLE_STATUS = '/api/push_price_status*',
+    MULTI_CALENDER_DSO = '/session/initialize'
 }

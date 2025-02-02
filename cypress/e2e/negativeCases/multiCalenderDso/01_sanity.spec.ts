@@ -32,10 +32,12 @@ beforeEach(() => {
     cy.login(loginUrl, loginDetails.username, loginDetails.password);
 });
 
-describe("MultiCalendar DSO Negative Tests", () => {
+describe("MultiCalendar DSO Negative Test Flows", () => {
     it("should not allow a user to apply a Date-Specific Override (DSO) with negative values", () => {
         pricingPage.dynamicPricingButton().should('be.visible').click();
-        pricingPage.calenderViewButton().should('be.visible').click();
+        cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
+        multiCalendarPage.getMapListingButton().should('be.visible').click();
+        cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -67,7 +69,9 @@ describe("MultiCalendar DSO Negative Tests", () => {
 
     it("should not allow a user to sync when sync toggle is disable", () => {
         pricingPage.dynamicPricingButton().should('be.visible').click();
-        pricingPage.calenderViewButton().should('be.visible').click();
+        cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
+        multiCalendarPage.getMapListingButton().should('be.visible').click();
+        cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -75,10 +79,17 @@ describe("MultiCalendar DSO Negative Tests", () => {
         // disable sync toggle
         cy.intercept('POST', ApiEndpoints.TOGGLE_STATUS).as('toggleStatus'); // Intercepts API call to verify sync button status
         multiCalendarPage.getSyncToggle().should('be.visible').click();
+        cy.wait('@toggleStatus').its('response.statusCode').should('eq', HttpStatus.OK);
 
         // sync the listing        
-        cy.wait('@toggleStatus').its('response.statusCode').should('eq', HttpStatus.OK);
         multiCalendarPage.getSyncButton().should('be.visible').click();
         multiCalendarPage.getErrorToaster().should('be.visible'); // check if the toaster is visible
     });
+});
+
+after(() => {
+    // enable sync toggle
+    cy.intercept('POST', ApiEndpoints.TOGGLE_STATUS).as('toggleStatus'); // Intercepts API call to verify sync button status
+    multiCalendarPage.getSyncToggle().should('be.visible').click();     
+    cy.wait('@toggleStatus').its('response.statusCode').should('eq', HttpStatus.OK);
 });

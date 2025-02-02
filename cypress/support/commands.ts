@@ -2,6 +2,7 @@ export {}; // This makes the file a module
 
 import { LoginPage } from 'cypress/pageObjects/loginPage/loginPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
+import { HttpStatus } from './utility';
 
 const pricingDashboardPage = new PricingDashboardPage();
 const loginPage = new LoginPage();
@@ -23,7 +24,6 @@ Cypress.Commands.add('login', (url: string, username: string, password: string) 
     }
     return true;
   });
-
   cy.visit(url);
   loginPage.userNameInputField().should('be.visible').type(username);
   loginPage.passwordInputField().should('be.visible').type(password);

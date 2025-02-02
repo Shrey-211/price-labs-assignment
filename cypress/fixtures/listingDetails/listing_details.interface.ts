@@ -10,4 +10,6 @@ export interface ListingDetails {
     updatedListingMaxPrice: string;
     updatedListingFinalPrice: string;
     updatedDsoReason: string;
+    parentListingName: string;
+    childListingName: string;
 }

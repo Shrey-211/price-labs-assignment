@@ -5,7 +5,7 @@ import { User } from 'cypress/fixtures/loginDetails/login_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { PricingDashboardPage } from 'cypress/pageObjects/pricingDashboard/pricingDashboardPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { Utility } from 'cypress/support/utility';
+import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 let loginDetails: User
@@ -30,7 +30,9 @@ beforeEach(() => {
 describe("MultiCalendar DSO Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO)", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
-      pricingPage.calenderViewButton().should('be.visible').click();
+      cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
+      multiCalendarPage.getMapListingButton().should('be.visible').click();
+      cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -58,7 +60,9 @@ describe("MultiCalendar DSO Tests", () => {
 
     it("should allow a user to modify an existing DSO", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
-      pricingPage.calenderViewButton().should('be.visible').click();
+      cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
+      multiCalendarPage.getMapListingButton().should('be.visible').click();
+      cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getDsoPriceDetails().should('be.visible').click();
@@ -83,7 +87,9 @@ describe("MultiCalendar DSO Tests", () => {
 
     it("should allow a user to remove an existing DSO", () => {
       pricingPage.dynamicPricingButton().should('be.visible').click();
-      pricingPage.calenderViewButton().should('be.visible').click();
+      cy.intercept('POST', ApiEndpoints.MULTI_CALENDER_DSO).as('multiCalenderPage');
+      multiCalendarPage.getMapListingButton().should('be.visible').click();
+      cy.wait('@multiCalenderPage').its('response.statusCode').should('eq', HttpStatus.CREATED);
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getDsoPriceDetails().should('be.visible').click();

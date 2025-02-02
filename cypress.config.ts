@@ -16,5 +16,6 @@ module.exports = defineConfig({
     requestTimeout: 50000,
     chromeWebSecurity: false,
     watchForFileChanges: false,
+    experimentalSessionAndOrigin: false
   },
 });

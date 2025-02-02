@@ -14,4 +14,6 @@ export class PricingDashboardPage {
         return cy.get('a[href="/multicalendar"]');
     }
 
+
+
 }

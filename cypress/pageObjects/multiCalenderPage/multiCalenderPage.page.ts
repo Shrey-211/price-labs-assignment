@@ -6,6 +6,11 @@ export class MultiCalendarPage {
         return cy.get('[qa-id="mc-search-listings-input"]');
     }
 
+    // Return search bar clear button
+    getSearchBarClearButton() {
+        return cy.get('.chakra-input__right-element');
+    }
+
     // Return date on calender
     getCalendarDate() {
         return cy.get('.css-1urksmm > .css-17crack > .css-1o6y018');
@@ -59,6 +64,11 @@ export class MultiCalendarPage {
     // Return Filtered property
     getFilteredProperty() {
         return cy.get('.css-1kh6bo9');
+    }
+
+    // Return Filtered property name
+    getFilteredPropertyName() {
+        return cy.get('.css-1jivscp');
     }
 
     // vertical more icon
@@ -115,5 +125,45 @@ export class MultiCalendarPage {
     //  Return sync toggle
     getSyncToggle() {
         return cy.get('.chakra-switch__track');
+    }
+
+     // Return map listing button
+    getMapListingButton() {
+        return cy.get('#mc-map-listings');
+    }
+
+    // Return map listing header
+    getMapListingHeader() {
+        return cy.get('.css-hzg3i6');
+    }
+
+    // get parent listing dropdown button
+    public parentListingDropdown() {
+        return cy.get('.css-18euh9p');
+    }
+
+    // return parent listing dropdown options
+    public listingDropdownOption() {
+        return cy.get('.css-ns3y9m');
+    }
+
+    // get child listing dropdown button
+    public childListingDropdown() {
+        return cy.get('.css-1pqv9th > .css-1vixs0m');
+    }
+
+    // Return Map listing button
+    getMapListingConfirmButton() {
+        return cy.get('#map-listings-btn');
+    }
+
+    // Return Map listing confirm dialog message
+    getMapListingConfirmDialogMessage() {
+        return cy.get('.css-abwrv');
+    }
+
+    // Return Map listing done mapping button
+    getMapListingDoneMappingButton() {
+        return cy.get('#cancel-map-modal');
     }
 }
