@@ -74,6 +74,29 @@ project-root/
 After running tests, reports can be found in the `cypress/reports` directory. The project supports:
 - Mochawesome HTML reports
 
+## Environment Preparation
+Pre-Test Environment Setup
+Before running tests, especially for 01_regression.spec.ts in Manage Listings, perform the following steps:
+
+### Group Cleanup:
+Ensure no existing groups with these names:
+
+ - Test Group Shreyas
+ - Test Group Shreyas Edited
+
+### Manual Cleanup Methods:
+
+ - If groups exist in the application, manually delete them before running tests
+ - Use the application's UI to search and remove these groups
+
+### Recommendations:
+
+- Always start with a clean test environment
+- Remove any pre-existing test data that might interfere with test execution
+- Verify no conflicting groups exist before running the test suite
+
+- Note: Failure to remove these groups may cause test failures or unexpected behavior in the 01_regression.spec.ts test case.
+
 ## Contributing
 
 1. Create a new branch for your feature
