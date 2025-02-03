@@ -4,7 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { ListingInvalidDetails } from 'cypress/fixtures/listingDetails/invalid_listing_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
+import { ApiEndpoints, HttpStatus, Urls, Utility } from 'cypress/support/utility';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 
 let listingDetails: ListingDetails
@@ -31,8 +31,10 @@ beforeEach(() => {
 
 describe("MultiCalendar DSO Negative Test Flows", () => {
     it("should not allow a user to apply a Date-Specific Override (DSO) with negative values", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
+        cy.url().should('include', Urls.MULTI_CALENDAR);
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -63,8 +65,10 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
     });
 
     it("should not allow a user to sync when sync toggle is disable", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
+        cy.url().should('include', Urls.MULTI_CALENDAR);
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');

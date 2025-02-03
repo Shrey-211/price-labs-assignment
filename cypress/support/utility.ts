@@ -20,3 +20,10 @@ export enum ApiEndpoints {
     TOGGLE_STATUS = '/api/push_price_status*',
     MULTI_CALENDER_DSO = '/session/initialize'
 }
+
+export enum Urls {
+    MULTI_CALENDAR = '/multicalendar',
+    PRICING = '/pricing',
+    MANAGE_LISTINGS = '/mappings',
+    CUSTOMIZATIONS = '/customization'
+}

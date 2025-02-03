@@ -33,6 +33,7 @@ Cypress.Commands.add('login', (url: string, username: string, password: string) 
   });
   cy.visit(url);
   cy.wait(2000)
+  cy.url().should('include', '/signin');
   loginPage.priceLabsLogo().should('be.visible');
   loginPage.loginHeader().should('be.visible');
   loginPage.userNameInputField().should('be.visible').type(username);

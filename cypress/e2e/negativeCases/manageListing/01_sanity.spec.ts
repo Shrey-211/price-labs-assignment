@@ -4,6 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
+import { Urls } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 const navigationTab = new NavigationTab();
@@ -25,8 +26,10 @@ beforeEach(() => {
 
 describe("Manage Listings Negative Tests", () => {
     it("should not allow user to add same group and subgroup for a listing", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -49,8 +52,10 @@ describe("Manage Listings Negative Tests", () => {
     });
 
     it("should not allow a user to hide a listing unless sync is switched off", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');

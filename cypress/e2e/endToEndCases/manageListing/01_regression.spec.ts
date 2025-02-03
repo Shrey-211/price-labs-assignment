@@ -5,6 +5,7 @@ import { CustomizationPage } from 'cypress/pageObjects/customizationsPage/custom
 import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
+import { Urls } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 const navigationTab = new NavigationTab();
@@ -27,8 +28,10 @@ beforeEach(() => {
 
 describe("Manage Listings Tests", () => {
     it("should allow a user to create a new customization group and add to the listing", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.customizationsButton().should('be.visible').click();
+        cy.url().should('include', Urls.CUSTOMIZATIONS);
         customizationsPage.groupTabButton().should('be.visible').click();
         customizationsPage.createGroupButton().should('be.visible').click();
         customizationsPage.createGroupHeader().should('be.visible');
@@ -41,6 +44,7 @@ describe("Manage Listings Tests", () => {
 
         cy.get('[qa-id="nav-item-title"]').should('be.visible').click();
         cy.get('[qa-id="dropdown-value-mlp"]').should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -60,8 +64,10 @@ describe("Manage Listings Tests", () => {
     });
 
     it("should allow a user to edit the group name and the edited value should reflect in listings page", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.customizationsButton().should('be.visible').click();
+        cy.url().should('include', Urls.CUSTOMIZATIONS);
         customizationsPage.groupTabButton().should('be.visible').click();
         customizationsPage.tableViewButton().should('be.visible').click();
         customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
@@ -102,6 +108,7 @@ describe("Manage Listings Tests", () => {
 
         cy.get('[qa-id="nav-item-title"]').should('be.visible').click();
         cy.get('[qa-id="dropdown-value-mlp"]').should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');

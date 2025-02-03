@@ -4,6 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
+import { Urls } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 const multiCalendarPage = new MultiCalendarPage();
@@ -25,8 +26,10 @@ beforeEach(() => {
 
 describe("MultiCalendar DSO Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO)", () => {
+      cy.url().should('include', Urls.PRICING);
       navigationTab.dynamicPricingButton().should('be.visible').click();
       navigationTab.calenderViewButton().should('be.visible').click();
+      cy.url().should('include', Urls.MULTI_CALENDAR);
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -52,8 +55,10 @@ describe("MultiCalendar DSO Tests", () => {
       });
 
     it("should allow a user to modify an existing DSO", () => {
+      cy.url().should('include', Urls.PRICING);
       navigationTab.dynamicPricingButton().should('be.visible').click();
       navigationTab.calenderViewButton().should('be.visible').click();
+      cy.url().should('include', Urls.MULTI_CALENDAR);
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`).should('be.visible').click();
@@ -76,8 +81,10 @@ describe("MultiCalendar DSO Tests", () => {
       });
 
     it("should allow a user to remove an existing DSO", () => {
+      cy.url().should('include', Urls.PRICING);
       navigationTab.dynamicPricingButton().should('be.visible').click();
       navigationTab.calenderViewButton().should('be.visible').click();
+      cy.url().should('include', Urls.MULTI_CALENDAR);
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('be.visible').click();

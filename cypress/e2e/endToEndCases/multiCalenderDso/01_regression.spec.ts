@@ -4,7 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { HttpStatus, ApiEndpoints} from 'cypress/support/utility';
+import { HttpStatus, ApiEndpoints, Urls} from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 const multiCalendarPage = new MultiCalendarPage();
@@ -24,26 +24,12 @@ beforeEach(() => {
     cy.login(loginUrl, username, password);
 });
 
-// Unmap the listings after the test
-after(() => {
-    navigationTab.dynamicPricingButton().should('be.visible').click();
-    navigationTab.manageListingButton().should('be.visible').click();
-    cy.get('[qa-id="apply-filter"]').click();
-    cy.get('[data-name="mapped_listings"]').click();
-    cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control').type('Lifes a Beach');
-    cy.wait(5000);
-    cy.get('#mapped-table > thead > tr > .bs-checkbox > .th-inner > label > input').click();
-    cy.get('#unmap_listing_bulk').click();
-    cy.get('#unmap-listing-button').click();
-    cy.get('.no-records-found > td').should('be.visible');
-    cy.clearLocalStorage();
-    cy.clearCookies();
-});
-
 describe("MultiCalendar DSO e2e Tests", () => {
     it("should allow a user to apply a Date-Specific Override (DSO) and sync data", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
+        cy.url().should('include', Urls.MULTI_CALENDAR);
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -73,9 +59,10 @@ describe("MultiCalendar DSO e2e Tests", () => {
     });
 
     it("should allow a user to map listings", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
-        cy.wait(5000);
+        cy.url().should('include', Urls.MULTI_CALENDAR);
         multiCalendarPage.getMapListingButton().should('be.visible').click();
         multiCalendarPage.getMapListingHeader().should('be.visible');
         multiCalendarPage.parentListingDropdown().should('be.visible').click();
@@ -111,4 +98,20 @@ describe("MultiCalendar DSO e2e Tests", () => {
             }
         });
     });
+});
+
+// Unmap the listings after the test
+after(() => {
+    navigationTab.dynamicPricingButton().should('be.visible').click();
+    navigationTab.manageListingButton().should('be.visible').click();
+    cy.get('[qa-id="apply-filter"]').click();
+    cy.get('[data-name="mapped_listings"]').click();
+    cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control').type('Lifes a Beach');
+    cy.wait(5000);
+    cy.get('#mapped-table > thead > tr > .bs-checkbox > .th-inner > label > input').click();
+    cy.get('#unmap_listing_bulk').click();
+    cy.get('#unmap-listing-button').click();
+    cy.get('.no-records-found > td').should('be.visible');
+    cy.clearLocalStorage();
+    cy.clearCookies();
 });

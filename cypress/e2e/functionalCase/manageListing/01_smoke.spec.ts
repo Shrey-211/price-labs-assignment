@@ -4,6 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
+import { Urls } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 const navigationTab = new NavigationTab();
@@ -25,8 +26,10 @@ beforeEach(() => {
 
 describe("Manage Listings Tests", () => {
     it("should allow a user to see all listings in Manage Listings", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -40,8 +43,10 @@ describe("Manage Listings Tests", () => {
     });
 
     it("should allow a user to add tag to the listing", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -57,8 +62,10 @@ describe("Manage Listings Tests", () => {
     });
 
     it("should allow a remove an existing tag", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
+        cy.url().should('include', Urls.MANAGE_LISTINGS);
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
