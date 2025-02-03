@@ -2,6 +2,7 @@
 
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
+import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { HttpStatus, ApiEndpoints, Urls} from 'cypress/support/utility';
@@ -9,6 +10,7 @@ import { HttpStatus, ApiEndpoints, Urls} from 'cypress/support/utility';
 let listingDetails: ListingDetails
 const multiCalendarPage = new MultiCalendarPage();
 const navigationTab = new NavigationTab();
+const manageListingsPage = new ManageListingsPage();
 const loginUrl = Cypress.env('baseUrl') as string;
 const username = Cypress.env('username') as string;
 const password = Cypress.env('password') as string;
@@ -113,9 +115,9 @@ after(() => {
     navigationTab.manageListingButton().should('be.visible').click();
     cy.get('[qa-id="apply-filter"]').click();
     cy.get('[data-name="mapped_listings"]').click();
-    cy.get('#mapped_listings > .table-responsive > .bootstrap-table > .fixed-table-toolbar > .float-left > .form-control').type('Lifes a Beach');
+    manageListingsPage.getMappedListingSearchBar().type('Lifes a Beach');
     cy.wait(5000);
-    cy.get('#mapped-table > thead > tr > .bs-checkbox > .th-inner > label > input').click();
+    manageListingsPage.getMappedListingCheckbox().click();
     cy.get('#unmap_listing_bulk').click();
     cy.get('#unmap-listing-button').click();
     cy.get('.no-records-found > td').should('be.visible');

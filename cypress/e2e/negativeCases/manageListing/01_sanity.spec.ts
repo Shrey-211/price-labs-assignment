@@ -30,12 +30,18 @@ describe("Manage Listings Negative Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
+        cy.log('Manage listing page opened');
+
+        // searching the desired listing
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.childListingName);
         cy.wait(2000);
+        cy.log('Listing searched successfully');
+
+        // try to add same group and sub group
         manageListingsPage.getListingCheckbox().should('be.visible').click();
         manageListingsPage.getAssignGroupSubGroupButton().should('be.visible').click();
         manageListingsPage.getAssignGroupSubGroupContainerHeader().should('be.visible').and('have.text', 'Assign Group/Subgroup');
@@ -56,6 +62,9 @@ describe("Manage Listings Negative Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
+        cy.log('Manage listing page opened');
+
+        // try to hide listing
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -66,7 +75,7 @@ describe("Manage Listings Negative Tests", () => {
         manageListingsPage.getMappedListingCheckbox().should('be.visible').click();
         manageListingsPage.getHideListingButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
-        cy.log('Tag added successfully, test completed');
+        cy.log('User was not able to hide listing, test completed');
     });
 });
 

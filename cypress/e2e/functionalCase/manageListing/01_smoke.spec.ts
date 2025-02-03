@@ -30,6 +30,9 @@ describe("Manage Listings Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
+        cy.log('Manage Listings page is visible');
+
+        // click on show all listing button to verify its functionality
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -47,11 +50,15 @@ describe("Manage Listings Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
+        cy.log('Manage Listings page is visible');
+
+        // add tags
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
+        cy.wait(2000);
         manageListingsPage.getAddTagButton().should('be.visible').click();
         manageListingsPage.getAddTagContainerHeader().should('be.visible');
         manageListingsPage.getAddTagContainerInput().should('be.visible').type('Test Tag');
@@ -66,11 +73,15 @@ describe("Manage Listings Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.manageListingButton().should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
+        cy.log('Manage Listings page is visible');
+
+        // remove existing tag
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
+        cy.wait(2000);
         manageListingsPage.getAddedTag('Test Tag').should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
         cy.get('body').then(($body) => {

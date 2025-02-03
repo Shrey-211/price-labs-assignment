@@ -32,6 +32,9 @@ describe("Manage Listings Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.customizationsButton().should('be.visible').click();
         cy.url().should('include', Urls.CUSTOMIZATIONS);
+        cy.log('Customizations page loaded');
+
+        // add a new group
         customizationsPage.groupTabButton().should('be.visible').click();
         customizationsPage.createGroupButton().should('be.visible').click();
         customizationsPage.createGroupHeader().should('be.visible');
@@ -41,10 +44,15 @@ describe("Manage Listings Tests", () => {
         customizationsPage.tableViewButton().should('be.visible').click();
         customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
         customizationsPage.searchedContent().should('be.visible').and('have.text', 'Test Group Shreyas');
+        cy.log('New group added')
 
+        // navigate to manage listing
         cy.get('[qa-id="nav-item-title"]').should('be.visible').click();
         cy.get('[qa-id="dropdown-value-mlp"]').should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
+        cy.log('Manage listings page loaded');
+
+        // search and add group tp listing
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
@@ -60,7 +68,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getUpdateButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
         manageListingsPage.getCustomizationGroupValue('Nothing Selected').should('be.visible');
-        cy.log('Customization group and sub-group added, test completed');
+        cy.log('New group created and added yo a listing, test completed');
     });
 
     it("should allow a user to edit the group name and the edited value should reflect in listings page", () => {
@@ -68,6 +76,9 @@ describe("Manage Listings Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.customizationsButton().should('be.visible').click();
         cy.url().should('include', Urls.CUSTOMIZATIONS);
+        cy.log('Customizations page loaded');
+
+        // searching and editing the group name
         customizationsPage.groupTabButton().should('be.visible').click();
         customizationsPage.tableViewButton().should('be.visible').click();
         customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
@@ -105,7 +116,9 @@ describe("Manage Listings Tests", () => {
                 .contains('Save Changes')
                 .click();
         customizationsPage.successToaster().should('be.visible');
+        cy.log('Group name edited successfully')
 
+        // navigating to manage listing to verify the change
         cy.get('[qa-id="nav-item-title"]').should('be.visible').click();
         cy.get('[qa-id="dropdown-value-mlp"]').should('be.visible').click();
         cy.url().should('include', Urls.MANAGE_LISTINGS);
@@ -116,29 +129,11 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
         manageListingsPage.getCustomizationGroupValue('Test Group Shreyas Edited').should('be.visible');
-        cy.log('Edit listing was successful, test completed');
+        cy.log('Edit group was successful, test completed');
     });
 });
 
 after(() => {
-    // delete the group  TODO
-    // cy.get('.navbar-brand > img').click();
-    // navigationTab.dynamicPricingButton().should('be.visible').click();
-    // navigationTab.customizationsButton().should('be.visible').click();
-    // customizationsPage.groupTabButton().should('be.visible').click();
-    // customizationsPage.tableViewButton().should('be.visible').click();
-    // customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
-    // cy.wait(2000);
-    // cy.get('body').then(($body) => {
-    //     if ($body.find('tbody > tr > .column_group_name').length > 0) {
-    //         cy.log('Group found, proceeding to deletion');
-    //     } else {
-    //         cy.log('Group not found noting to delete');
-    //         throw new Error('Group not found');
-    //     }
-    // });
-    // customizationsPage.moreOptionsInTableButton().should('be.visible').click();
-    // customizationsPage.deleteGroupOption().should('be.visible').click();
     cy.clearLocalStorage();
     cy.clearCookies();
 });
