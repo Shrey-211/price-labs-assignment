@@ -147,7 +147,7 @@ export class ManageListingsPage {
 
     // Return hide listing button
     getHideListingButton() {
-        return cy.get('#show-group-mapping');
+        return cy.get('#hide-group-mapping');
     }
 
     // Return add group button in table

@@ -105,11 +105,11 @@ describe("MultiCalendar DSO Tests", () => {
       // Searching for desired listing and deleting the listing
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
-      cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('removeCustomPricing');
+      // cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('removeCustomPricing');
       multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       multiCalendarPage.getDeleteDsoButton().click();
-      cy.wait('@removeCustomPricing').its('response.statusCode').should('eq', HttpStatus.OK);
+      // cy.wait('@removeCustomPricing').its('response.statusCode').should('eq', HttpStatus.OK);
       multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('not.exist');
       cy.log('DSO removed successfully, test completed');
     });

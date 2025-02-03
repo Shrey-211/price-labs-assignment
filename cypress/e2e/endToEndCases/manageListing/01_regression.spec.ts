@@ -73,8 +73,8 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getAssignGroupSubGroupButton().should('be.visible').click();
         manageListingsPage.getAssignGroupSubGroupContainerHeader().should('be.visible').and('have.text', enText.assignGroupSubGroupContainerHeader);
         manageListingsPage.getAssignGroupDropdown().should('be.visible').click();
-        manageListingsPage.getGroupSearchBox().should('be.visible').type(listingDetails.listingName);
-        manageListingsPage.getGroupDropdownOptions(listingDetails.listingName).should('be.visible').click();
+        manageListingsPage.getGroupSearchBox().should('be.visible').type(groupDetails.groupName);
+        manageListingsPage.getGroupDropdownOptions(groupDetails.groupName).should('be.visible').click();
         manageListingsPage.getUpdateButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
         manageListingsPage.getCustomizationGroupValue('Nothing Selected').should('be.visible');
