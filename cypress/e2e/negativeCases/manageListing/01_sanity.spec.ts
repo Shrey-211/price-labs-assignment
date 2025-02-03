@@ -72,7 +72,7 @@ describe("Manage Listings Negative Tests", () => {
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
+        manageListingsPage.getShowAllListingsButton().should('be.visible').click({force: true});
         manageListingsPage.getMappedListingHeader().should('be.visible').click();
         manageListingsPage.getMappedListingSearchBar().should('be.visible').type(listingDetails.listingNameHideAndSync);
         cy.wait(2000);

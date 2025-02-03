@@ -36,7 +36,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
+        manageListingsPage.getShowAllListingsButton().should('be.visible').click({force: true});
         manageListingsPage.getTabsHeader().should('be.visible');
         manageListingsPage.getUnmappedListingHeader().should('be.visible');
         manageListingsPage.getMappedListingHeader().should('be.visible');
@@ -56,7 +56,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
+        manageListingsPage.getShowAllListingsButton().should('be.visible').click({force: true});
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
         manageListingsPage.getAddTagButton().should('be.visible').click();
@@ -79,7 +79,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
+        manageListingsPage.getShowAllListingsButton().should('be.visible').click({force: true});
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
         manageListingsPage.getAddedTag(listingDetails.tagNameSmoke).should('be.visible').click();

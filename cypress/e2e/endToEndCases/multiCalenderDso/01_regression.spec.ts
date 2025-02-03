@@ -65,7 +65,7 @@ describe("MultiCalendar DSO e2e Tests", () => {
         cy.wait('@syncPrices').its('response.statusCode').should('eq', HttpStatus.OK);
     });
 
-    it.only("should allow a user to map listings", () => {
+    it("should allow a user to map listings", () => {
         cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();

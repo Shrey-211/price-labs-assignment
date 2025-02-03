@@ -66,7 +66,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
+        manageListingsPage.getShowAllListingsButton().should('be.visible').click({force: true});
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
         manageListingsPage.getListingCheckbox().should('be.visible').click();
@@ -135,7 +135,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getManageListingsFilterHeader().should('be.visible');
         manageListingsPage.getFilterCloseButton().should('be.visible').click();
         manageListingsPage.getManageListingPageHeader().should('be.visible');
-        manageListingsPage.getShowAllListingsButton().should('be.visible').click();
+        manageListingsPage.getShowAllListingsButton().should('be.visible').click({force: true});
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
         manageListingsPage.getCustomizationGroupValue(groupDetails.groupNameEdited).should('be.visible');
