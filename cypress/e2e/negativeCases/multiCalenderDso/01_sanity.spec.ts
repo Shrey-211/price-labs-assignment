@@ -35,12 +35,18 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
         cy.url().should('include', Urls.MULTI_CALENDAR);
+        cy.log('Multi-Calendar page opened');
+
+        // Searching for desired listing
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
         multiCalendarPage.getMoreVertIcon().should('be.visible').click();
         multiCalendarPage.getAddOverrideButton().should('be.visible').click();
         multiCalendarPage.getDsoModalTitle().should('be.visible');
+        cy.log('DSO tab opened');
+
+        // Applying negative values
         multiCalendarPage.getDsoFinalPrice().should('be.visible').type(ListingInvalidDetails.listingFinalPrice); // input the negative value
         multiCalendarPage.getStayRestrictionsHeader().should('be.visible').click(); // click outside the input field
         multiCalendarPage.getDsoFinalPrice().invoke('val').should('be.empty'); // check if the input field is empty
@@ -69,6 +75,9 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
         cy.url().should('include', Urls.MULTI_CALENDAR);
+        cy.log('Multi-Calendar page opened');
+
+        // searching for the listing
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -85,7 +94,7 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
 });
 
 after(() => {
-    // enable sync toggle
+    // enable sync toggle to reset the environment
     cy.intercept('POST', ApiEndpoints.TOGGLE_STATUS).as('toggleStatus'); // Intercepts API call to verify sync button status
     multiCalendarPage.getSyncToggle().should('be.visible').click();     
     cy.wait('@toggleStatus').its('response.statusCode').should('eq', HttpStatus.OK);

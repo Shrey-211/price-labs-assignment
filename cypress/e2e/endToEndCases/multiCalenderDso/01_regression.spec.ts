@@ -63,13 +63,20 @@ describe("MultiCalendar DSO e2e Tests", () => {
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
         cy.url().should('include', Urls.MULTI_CALENDAR);
+        cy.log('Multi-Calendar page open');
+
+        // mapping the listing
         multiCalendarPage.getMapListingButton().should('be.visible').click();
         multiCalendarPage.getMapListingHeader().should('be.visible');
         multiCalendarPage.parentListingDropdown().should('be.visible').click();
         multiCalendarPage.parentListingDropdown().type(listingDetails.parentListingName);
         multiCalendarPage.listingDropdownOption().should('be.visible').click();
+        cy.log('parent mapping successful');
+
         multiCalendarPage.childListingDropdown().type(listingDetails.childListingName);
         multiCalendarPage.listingDropdownOption().should('be.visible').click();
+        cy.log('child mapping successful');
+
         multiCalendarPage.getMapListingHeader().should('be.visible').click();
         multiCalendarPage.getMapListingConfirmButton().should('be.visible').click();
         multiCalendarPage.getMapListingConfirmDialogMessage().should('be.visible').and('have.text', 'Mapped Successfully');

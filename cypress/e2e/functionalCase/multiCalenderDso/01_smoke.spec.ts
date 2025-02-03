@@ -32,6 +32,7 @@ describe("MultiCalendar DSO Tests", () => {
       cy.url().should('include', Urls.MULTI_CALENDAR);
       cy.log('Multi-Calendar page opened');
 
+      // Searching for desired listing and opening the dso tab
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('addCustomPricing');
@@ -41,6 +42,7 @@ describe("MultiCalendar DSO Tests", () => {
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       cy.log('DSO tab opened');
 
+      // entering the values
       multiCalendarPage.getDsoFinalPrice().should('be.visible').type(listingDetails.listingFinalPrice);
       multiCalendarPage.getDsoMinPrice().should('be.visible').type(listingDetails.listingMinPrice);
       multiCalendarPage.getDsoMaxPrice().should('be.visible').type(listingDetails.listingMaxPrice);
@@ -66,6 +68,7 @@ describe("MultiCalendar DSO Tests", () => {
       cy.url().should('include', Urls.MULTI_CALENDAR);
       cy.log('Multi-Calendar page opened');
 
+      // Searching for desired listing and opening dso tab
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('addCustomPricing');
@@ -73,6 +76,7 @@ describe("MultiCalendar DSO Tests", () => {
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       cy.log('DSO tab opened');
 
+      // updating the values
       multiCalendarPage.getDsoFinalPrice().should('be.visible').clear().type(listingDetails.updatedListingFinalPrice);
       multiCalendarPage.getDsoMinPrice().should('be.visible').clear().type(listingDetails.updatedListingMinPrice);
       multiCalendarPage.getDsoMaxPrice().should('be.visible').clear().type(listingDetails.updatedListingMaxPrice);
@@ -98,6 +102,7 @@ describe("MultiCalendar DSO Tests", () => {
       cy.url().should('include', Urls.MULTI_CALENDAR);
       cy.log('Multi-Calendar page opened');
 
+      // Searching for desired listing and deleting the listing
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
       cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('removeCustomPricing');
