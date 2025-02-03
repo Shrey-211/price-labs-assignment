@@ -36,6 +36,10 @@ beforeEach(() => {
     cy.login(loginUrl, username, password);
 });
 
+//  Ensure no existing groups with these names:
+//  - Test Group Shreyas
+//  - Test Group Shreyas Edited
+
 describe("Manage Listings Tests", () => {
     it("should allow a user to create a new customization group and add to the listing", () => {
         cy.url().should('include', Urls.PRICING);
