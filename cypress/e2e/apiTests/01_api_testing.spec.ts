@@ -1,147 +1,93 @@
-// cypress/e2e/api/apiTests.cy.js
 
-describe.skip('API Testing Suite', () => {
-    // Base URL configuration
-    const baseUrl = Cypress.env('apiUrl') || 'https://api.your-service.com'
+let authToken: string;
 
-    beforeEach(() => {
-    // Common setup before each test
+beforeEach(() => {
+    cy.log('login in to get tokens')
     cy.request({
         method: 'POST',
-        url: `${baseUrl}/auth/login`,
+        url: 'https://api.novu.co/v1/widgets/session/initialize', 
         body: {
-        username: Cypress.env('username'),
-        password: Cypress.env('password')
-        }
-    }).then((response) => {
-        // Store the token for subsequent requests
-        window.localStorage.setItem('token', response.body.token)
-    })
-    })
-
-describe('GET Endpoints', () => {
-    it('should successfully fetch user data', () => {
-        cy.request({
-        method: 'GET',
-        url: `${baseUrl}/users`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        }
+            applicationIdentifier: 'jioeUUYx3h8p',
+            subscriberId: '123641',
+            hmacHash: null
+            }
         }).then((response) => {
-        // Status code assertion
-        expect(response.status).to.eq(200)
-        
-        // Response body assertions
-        expect(response.body).to.have.property('data')
-        expect(response.body.data).to.be.an('array')
-        
-        // Schema validation
-        response.body.data.forEach((user) => {
-            expect(user).to.have.all.keys('id', 'name', 'email')
-        })
-        
-        // Response time assertion
-        expect(response.duration).to.be.lessThan(1000)
-        })
-    })
-    })
+            expect(response.status).to.eq(201);
+            expect(response.body).to.have.property('data');
+            expect(response.body.data).to.have.property('token');
+            authToken = response.body.data.token;
+            cy.log('authToken', authToken);
+            cy.log('Response Cookies:', response.headers['set-cookie']);
+            expect(response.body.data.token).to.be.a('string');
+            expect(response.body.data).to.have.property('profile');
+            expect(response.body.data.profile).to.have.property('_id', '6607b4366df43c247adccef5');
+            expect(response.body.data.profile).to.have.property('firstName', 'QA');
+            expect(response.body.data.profile).to.have.property('lastName', 'Hiring');
+           // Check cookies after login
+            cy.getCookies().then((cookies) => {
+                cy.log('Cookies in Cypress after login: ', cookies);
+                cookies.forEach((cookie) => {
+                    Cypress.env(cookie.name, cookie.value); // Store cookies in Cypress environment variables
+                    cy.log(`cookie Name: ${cookie.name}`);
+                    cy.log(`cookie Val: ${cookie.value}`);
+                });
+            });
+    });
+});
 
-describe('POST Endpoints', () => {
-    it('should create a new resource', () => {
-        const payload = {
-        name: 'Test User',
-        email: 'test@example.com'
-        }
+describe('API Tests', () => {
 
+    it('should successfully fetch organization details', () => {
         cy.request({
-        method: 'POST',
-        url: `${baseUrl}/users`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        },
-        body: payload
+            method: 'GET',
+            url: 'https://api.novu.co/v1/widgets/organization', // Replace with actual organization endpoint
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+                Accept: 'application/json, text/plain, */*'
+            }
         }).then((response) => {
-        expect(response.status).to.eq(201)
-        expect(response.body).to.include(payload)
-        })
-    })
-    })
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body.data).to.have.property('_id', '66032532f43359bff28c011f');
+            expect(response.body.data).to.have.property('name', 'PriceLabs');
+            expect(response.body.data).to.have.property('branding');
+            expect(response.body.data.branding).to.have.property('color', '#f47373');
+            expect(response.body.data.branding).to.have.property('logo', 'https://s3.us-east-1.amazonaws.com/prod-novu-app-bucket/66032532f43359bff28c011f/66032532f43359bff28c016e/e06eb7414a09434f48bac2cb0273dd0e.png');
+            expect(response.body.data.branding).to.have.property('fontFamily', 'inherit');
+        });
+    });
 
-describe('PUT Endpoints', () => {
-    it('should update an existing resource', () => {
-        const updatePayload = {
-        name: 'Updated Name'
-        }
-
+    it.skip('should successfully update push price status', () => {
+        cy.getCookies().then((cookies) => {
+            cookies.forEach((cookie) => {
+                cy.setCookie(cookie.name, cookie.value); // Set cookies before API request
+                cy.log(`cookie Name: ${cookie.name}`);
+                cy.log(`cookie Val: ${cookie.value}`);
+            });
+        });
         cy.request({
-        method: 'PUT',
-        url: `${baseUrl}/users/1`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        },
-        body: updatePayload
+            method: 'POST',
+            url: `https://app.pricelabs.co/api/push_price_status?${Date.now()}`,
+            headers: {
+                authorization: `Bearer ${authToken}`,
+                accept: 'application/json',
+                'content-type': 'application/json'
+            },
+            body: {
+                push_status: true,
+                listing_id: 'VRMREALTY___206',
+                pms_name: 'vrm'
+            }
         }).then((response) => {
-        expect(response.status).to.eq(200)
-        expect(response.body.name).to.eq(updatePayload.name)
-        })
-    })
-    })
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('message', 'SUCCESS');
+            expect(response.body).to.have.property('response');
+            expect(response.body.response).to.have.property('message');
+            expect(response.body.response).to.have.property('sync', false);
+            expect(response.body.response).to.have.property('ask_feedback', false);
+            expect(response.body.response).to.have.property('listing_move_to_new_algo', false);
+            expect(response.body.response).to.have.property('listing_name', '.Christian Test 100');
+        });
+    });
 
-describe('DELETE Endpoints', () => {
-    it('should delete a resource', () => {
-        cy.request({
-        method: 'DELETE',
-        url: `${baseUrl}/users/1`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        }
-        }).then((response) => {
-        expect(response.status).to.eq(204)
-        })
-    })
-    })
-
-describe('Error Handling', () => {
-    it('should handle 404 not found', () => {
-        cy.request({
-        method: 'GET',
-        url: `${baseUrl}/nonexistent`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        },
-        failOnStatusCode: false
-        }).then((response) => {
-        expect(response.status).to.eq(404)
-        })
-    })
-
-    it('should handle 400 bad request', () => {
-        cy.request({
-        method: 'POST',
-        url: `${baseUrl}/users`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        },
-        body: {},  // Empty body to trigger validation error
-        failOnStatusCode: false
-        }).then((response) => {
-        expect(response.status).to.eq(400)
-        expect(response.body).to.have.property('error')
-        })
-    })
-    })
-
-describe('Performance Testing', () => {
-    it('should respond within acceptable time', () => {
-        cy.request({
-        method: 'GET',
-        url: `${baseUrl}/users`,
-        headers: {
-            'Authorization': `Bearer ${window.localStorage.getItem('token')}`
-        }
-        }).then((response) => {
-        expect(response.duration).to.be.lessThan(1000) // 1 second
-        })
-    })
-    })
-})
+});
