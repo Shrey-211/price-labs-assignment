@@ -32,7 +32,7 @@ beforeEach(() => {
                     cy.log(`cookie Val: ${cookie.value}`);
                 });
             });
-    });
+        });
 });
 
 describe('API Tests', () => {
@@ -40,7 +40,7 @@ describe('API Tests', () => {
     it('should successfully fetch organization details', () => {
         cy.request({
             method: 'GET',
-            url: 'https://api.novu.co/v1/widgets/organization', // Replace with actual organization endpoint
+            url: 'https://api.novu.co/v1/widgets/organization',
             headers: {
                 Authorization: `Bearer ${authToken}`,
                 Accept: 'application/json, text/plain, */*'
@@ -56,6 +56,36 @@ describe('API Tests', () => {
             expect(response.body.data.branding).to.have.property('fontFamily', 'inherit');
         });
     });
+
+    it('should successfully fetch unseen', () => {
+        cy.request({
+            method: 'GET',
+            url: 'https://api.novu.co/v1/widgets/notifications/unseen?limit=100',
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+                Accept: 'application/json, text/plain, */*'
+            }
+        }).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body.data).to.have.property('count',0);
+        });
+    })
+
+    it('should successfully fetch seen', () => {
+        cy.request({
+            method: 'GET',
+            url: 'https://api.novu.co/v1/widgets/notifications/unread?limit=100',
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+                Accept: 'application/json, text/plain, */*'
+            }
+        }).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('data');
+            expect(response.body.data).to.have.property('count',1);
+        });
+    })
 
     it.skip('should successfully update push price status', () => {
         cy.getCookies().then((cookies) => {
