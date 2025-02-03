@@ -1,12 +1,13 @@
 /// <reference types="cypress" />
-
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
+import { EnglishTexts } from 'cypress/fixtures/text/en.interface';
 import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { Urls } from 'cypress/support/utility';
 
-let listingDetails: ListingDetails
+let listingDetails: ListingDetails;
+let enText: EnglishTexts;
 const navigationTab = new NavigationTab();
 const manageListingsPage = new ManageListingsPage();
 const loginUrl = Cypress.env('baseUrl') as string;
@@ -16,6 +17,9 @@ const password = Cypress.env('password') as string;
 before(() => {
     cy.fixture('listingDetails/listing_details').then((listingDetail) => {
         listingDetails = listingDetail;
+    });
+    cy.fixture('text/en').then((engText) => {
+        enText = engText;
     });
     });
 
@@ -44,12 +48,12 @@ describe("Manage Listings Negative Tests", () => {
         // try to add same group and sub group
         manageListingsPage.getListingCheckbox().should('be.visible').click();
         manageListingsPage.getAssignGroupSubGroupButton().should('be.visible').click();
-        manageListingsPage.getAssignGroupSubGroupContainerHeader().should('be.visible').and('have.text', 'Assign Group/Subgroup');
+        manageListingsPage.getAssignGroupSubGroupContainerHeader().should('be.visible').and('have.text', enText.assignGroupSubGroupContainerHeader);
         manageListingsPage.getAssignGroupDropdown().should('be.visible').click();
-        manageListingsPage.getGroupSearchBox().should('be.visible').type('abc');
-        manageListingsPage.getGroupDropdownOptions('abc').should('be.visible').click();
+        manageListingsPage.getGroupSearchBox().should('be.visible').type(listingDetails.groupNameSanityCase);
+        manageListingsPage.getGroupDropdownOptions(listingDetails.groupNameSanityCase).should('be.visible').click();
         manageListingsPage.getAssignSubGroupDropdown().should('be.visible').click();
-        manageListingsPage.getSubGroupSearchBox().should('be.visible').type('abc');
+        manageListingsPage.getSubGroupSearchBox().should('be.visible').type(listingDetails.groupNameSanityCase);
         manageListingsPage.getSubGroupDropdownOptions().should('be.visible').click();
         manageListingsPage.getUpdateButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
@@ -70,7 +74,7 @@ describe("Manage Listings Negative Tests", () => {
         manageListingsPage.getManageListingPageHeader().should('be.visible');
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getMappedListingHeader().should('be.visible').click();
-        manageListingsPage.getMappedListingSearchBar().should('be.visible').type('121 Select Views');
+        manageListingsPage.getMappedListingSearchBar().should('be.visible').type(listingDetails.listingNameHideAndSync);
         cy.wait(2000);
         manageListingsPage.getMappedListingCheckbox().should('be.visible').click();
         manageListingsPage.getHideListingButton().should('be.visible').click();

@@ -6,8 +6,10 @@ import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manage
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { HttpStatus, ApiEndpoints, Urls} from 'cypress/support/utility';
+import { EnglishTexts } from 'cypress/fixtures/text/en.interface';
 
 let listingDetails: ListingDetails
+let enText: EnglishTexts;
 const multiCalendarPage = new MultiCalendarPage();
 const navigationTab = new NavigationTab();
 const manageListingsPage = new ManageListingsPage();
@@ -18,6 +20,9 @@ const password = Cypress.env('password') as string;
 before(() => {
     cy.fixture('listingDetails/listing_details').then((listingDetail) => {
         listingDetails = listingDetail;
+    });
+    cy.fixture('text/en').then((engText) => {
+        enText = engText;
     });
 });
 
@@ -81,7 +86,7 @@ describe("MultiCalendar DSO e2e Tests", () => {
 
         multiCalendarPage.getMapListingHeader().should('be.visible').click();
         multiCalendarPage.getMapListingConfirmButton().should('be.visible').click();
-        multiCalendarPage.getMapListingConfirmDialogMessage().should('be.visible').and('have.text', 'Mapped Successfully');
+        multiCalendarPage.getMapListingConfirmDialogMessage().should('be.visible').and('have.text', enText.mappedSuccessfully);
         multiCalendarPage.getMapListingDoneMappingButton().should('be.visible').click();
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.parentListingName);
         cy.wait(5000);
@@ -115,7 +120,7 @@ after(() => {
     navigationTab.manageListingButton().should('be.visible').click();
     cy.get('[qa-id="apply-filter"]').click();
     cy.get('[data-name="mapped_listings"]').click();
-    manageListingsPage.getMappedListingSearchBar().type('Lifes a Beach');
+    manageListingsPage.getMappedListingSearchBar().type(listingDetails.parentListingName);
     cy.wait(5000);
     manageListingsPage.getMappedListingCheckbox().click();
     cy.get('#unmap_listing_bulk').click();

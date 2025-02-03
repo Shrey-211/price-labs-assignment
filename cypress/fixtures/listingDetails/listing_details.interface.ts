@@ -12,4 +12,7 @@ export interface ListingDetails {
     updatedDsoReason: string;
     parentListingName: string;
     childListingName: string;
+    tagNameSmoke: string;
+    groupNameSanityCase: string;
+    listingNameHideAndSync: string;
 }

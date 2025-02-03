@@ -1,13 +1,17 @@
 /// <reference types="cypress" />
 
+import { GroupDetails } from 'cypress/fixtures/groupDetails/group_details.interface';
 import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.interface';
+import { EnglishTexts } from 'cypress/fixtures/text/en.interface';
 import { CustomizationPage } from 'cypress/pageObjects/customizationsPage/customizationsPage.page';
 import { ManageListingsPage } from 'cypress/pageObjects/manageListingPage/manageListingPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
 import { Urls } from 'cypress/support/utility';
 
-let listingDetails: ListingDetails
+let listingDetails: ListingDetails;
+let groupDetails: GroupDetails;
+let enText: EnglishTexts;
 const navigationTab = new NavigationTab();
 const manageListingsPage = new ManageListingsPage();
 const customizationsPage = new CustomizationPage();
@@ -18,6 +22,12 @@ const password = Cypress.env('password') as string;
 before(() => {
     cy.fixture('listingDetails/listing_details').then((listingDetail) => {
         listingDetails = listingDetail;
+    });
+    cy.fixture('groupDetails/group_details').then((groupDetail) => {
+        groupDetails = groupDetail;
+    });
+    cy.fixture('text/en').then((engText) => {
+        enText = engText;
     });
     });
 
@@ -38,12 +48,12 @@ describe("Manage Listings Tests", () => {
         customizationsPage.groupTabButton().should('be.visible').click();
         customizationsPage.createGroupButton().should('be.visible').click();
         customizationsPage.createGroupHeader().should('be.visible');
-        customizationsPage.groupNameInputField().type('Test Group Shreyas');
+        customizationsPage.groupNameInputField().type(groupDetails.groupName);
         customizationsPage.createGroupPopUpButton().should('be.visible').click();
         cy.wait(5000);
         customizationsPage.tableViewButton().should('be.visible').click();
-        customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
-        customizationsPage.searchedContent().should('be.visible').and('have.text', 'Test Group Shreyas');
+        customizationsPage.searchBar().should('be.visible').type(groupDetails.groupName);
+        customizationsPage.searchedContent().should('be.visible').and('have.text', groupDetails.groupName);
         cy.log('New group added')
 
         // navigate to manage listing
@@ -61,10 +71,10 @@ describe("Manage Listings Tests", () => {
         cy.wait(2000);
         manageListingsPage.getListingCheckbox().should('be.visible').click();
         manageListingsPage.getAssignGroupSubGroupButton().should('be.visible').click();
-        manageListingsPage.getAssignGroupSubGroupContainerHeader().should('be.visible').and('have.text', 'Assign Group/Subgroup');
+        manageListingsPage.getAssignGroupSubGroupContainerHeader().should('be.visible').and('have.text', enText.assignGroupSubGroupContainerHeader);
         manageListingsPage.getAssignGroupDropdown().should('be.visible').click();
-        manageListingsPage.getGroupSearchBox().should('be.visible').type('Test Group Shreyas');
-        manageListingsPage.getGroupDropdownOptions('Test Group Shreyas').should('be.visible').click();
+        manageListingsPage.getGroupSearchBox().should('be.visible').type(listingDetails.listingName);
+        manageListingsPage.getGroupDropdownOptions(listingDetails.listingName).should('be.visible').click();
         manageListingsPage.getUpdateButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
         manageListingsPage.getCustomizationGroupValue('Nothing Selected').should('be.visible');
@@ -81,7 +91,7 @@ describe("Manage Listings Tests", () => {
         // searching and editing the group name
         customizationsPage.groupTabButton().should('be.visible').click();
         customizationsPage.tableViewButton().should('be.visible').click();
-        customizationsPage.searchBar().should('be.visible').type('Test Group Shreyas');
+        customizationsPage.searchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
         cy.get('body').then(($body) => {
             if ($body.find('tbody > tr > .column_group_name').length > 0) {
@@ -106,7 +116,7 @@ describe("Manage Listings Tests", () => {
                 .find('.css-1vqcnxu')
                 .should('be.visible')
                 .clear()
-                .type('Test Group Shreyas Edited');
+                .type(groupDetails.groupNameEdited);
         customizationsPage.editGroupIframe()
             .its('0.contentDocument.body')
             .should('not.be.empty')
@@ -128,7 +138,7 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
-        manageListingsPage.getCustomizationGroupValue('Test Group Shreyas Edited').should('be.visible');
+        manageListingsPage.getCustomizationGroupValue(groupDetails.groupNameEdited).should('be.visible');
         cy.log('Edit group was successful, test completed');
     });
 });

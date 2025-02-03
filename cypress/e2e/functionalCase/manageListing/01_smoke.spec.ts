@@ -61,10 +61,10 @@ describe("Manage Listings Tests", () => {
         cy.wait(2000);
         manageListingsPage.getAddTagButton().should('be.visible').click();
         manageListingsPage.getAddTagContainerHeader().should('be.visible');
-        manageListingsPage.getAddTagContainerInput().should('be.visible').type('Test Tag');
+        manageListingsPage.getAddTagContainerInput().should('be.visible').type(listingDetails.tagNameSmoke);
         manageListingsPage.getAddTagContainerCreateButton().should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
-        manageListingsPage.getAddedTag('Test Tag').should('be.visible');
+        manageListingsPage.getAddedTag(listingDetails.tagNameSmoke).should('be.visible');
         cy.log('Tag added successfully, test completed');
     });
 
@@ -82,10 +82,10 @@ describe("Manage Listings Tests", () => {
         manageListingsPage.getShowAllListingsButton().should('be.visible').click();
         manageListingsPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(2000);
-        manageListingsPage.getAddedTag('Test Tag').should('be.visible').click();
+        manageListingsPage.getAddedTag(listingDetails.tagNameSmoke).should('be.visible').click();
         manageListingsPage.getToastMessage().should('be.visible');
         cy.get('body').then(($body) => {
-            if ($body.find(`[data-tag-name="Test Tag"]`).length > 0) {
+            if ($body.find(`[data-tag-name="${listingDetails.tagNameSmoke}"]`).length > 0) {
                 cy.log('Failed to removed tag, test failed');
                 throw new Error('Failed to remove tag');
             } else {
