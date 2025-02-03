@@ -112,7 +112,7 @@ export class ManageListingsPage {
 
     // Return sub-group dropdown options
     getSubGroupDropdownOptions() {
-        return cy.get('#bs-select-32-5');
+        return cy.get('#bs-select-36-14');
     }
 
     // Return update button
