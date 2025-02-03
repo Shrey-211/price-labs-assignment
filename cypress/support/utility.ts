@@ -7,18 +7,14 @@ export class Utility {
 export enum HttpStatus {
     OK = 200,
     CREATED = 201,
-    NO_CONTENT = 204,
-    BAD_REQUEST = 400,
-    UNAUTHORIZED = 401,
-    FORBIDDEN = 403,
-    NOT_FOUND = 404,
-    INTERNAL_SERVER_ERROR = 500
 }
 
 export enum ApiEndpoints {
     SYNC_PRICES = '/api/sync_prices*',
     TOGGLE_STATUS = '/api/push_price_status*',
-    MULTI_CALENDER_DSO = '/session/initialize'
+    MULTI_CALENDER_DSO = '/session/initialize',
+    ADD_CUSTOM_PRICING = '/api/add_custom_pricing',
+    REMOVE_CUSTOM_PRICING = '/api/remove_custom_pricing'
 }
 
 export enum Urls {

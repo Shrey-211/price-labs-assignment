@@ -4,7 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { Urls } from 'cypress/support/utility';
+import { ApiEndpoints, HttpStatus, Urls } from 'cypress/support/utility';
 
 let listingDetails: ListingDetails
 const multiCalendarPage = new MultiCalendarPage();
@@ -30,18 +30,24 @@ describe("MultiCalendar DSO Tests", () => {
       navigationTab.dynamicPricingButton().should('be.visible').click();
       navigationTab.calenderViewButton().should('be.visible').click();
       cy.url().should('include', Urls.MULTI_CALENDAR);
+      cy.log('Multi-Calendar page opened');
+
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
+      cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('addCustomPricing');
       multiCalendarPage.getFilteredProperty().should('be.visible');
       multiCalendarPage.getMoreVertIcon().should('be.visible').click();
       multiCalendarPage.getAddOverrideButton().should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
+      cy.log('DSO tab opened');
+
       multiCalendarPage.getDsoFinalPrice().should('be.visible').type(listingDetails.listingFinalPrice);
       multiCalendarPage.getDsoMinPrice().should('be.visible').type(listingDetails.listingMinPrice);
       multiCalendarPage.getDsoMaxPrice().should('be.visible').type(listingDetails.listingMaxPrice);
       multiCalendarPage.getDsoBasePrice().should('be.visible').type(listingDetails.listingBasePrice);
       multiCalendarPage.getCustomPriceReason().type(listingDetails.dsoReason);
       multiCalendarPage.getAddDsoButton().click();
+      cy.wait('@addCustomPricing').its('response.statusCode').should('eq', HttpStatus.OK);
       cy.get('body').then(($body) => {
         if ($body.find('.css-bxak8j').length > 0) {
             multiCalendarPage.getOverrideUpdateButton().click();
@@ -50,7 +56,6 @@ describe("MultiCalendar DSO Tests", () => {
         });
       multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`)
         .should('be.visible');
-    
       cy.log('DSO applied successfully, test completed');
       });
 
@@ -59,16 +64,22 @@ describe("MultiCalendar DSO Tests", () => {
       navigationTab.dynamicPricingButton().should('be.visible').click();
       navigationTab.calenderViewButton().should('be.visible').click();
       cy.url().should('include', Urls.MULTI_CALENDAR);
+      cy.log('Multi-Calendar page opened');
+
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
+      cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('addCustomPricing');
       multiCalendarPage.getDsoPriceDetails(`Price: ${listingDetails.listingFinalPrice} $, Base Price: ${listingDetails.listingBasePrice} $, Min Price: ${listingDetails.listingMinPrice} $, Max Price: ${listingDetails.listingMaxPrice} $, Reason: ${listingDetails.dsoReason}`).should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
+      cy.log('DSO tab opened');
+
       multiCalendarPage.getDsoFinalPrice().should('be.visible').clear().type(listingDetails.updatedListingFinalPrice);
       multiCalendarPage.getDsoMinPrice().should('be.visible').clear().type(listingDetails.updatedListingMinPrice);
       multiCalendarPage.getDsoMaxPrice().should('be.visible').clear().type(listingDetails.updatedListingMaxPrice);
       multiCalendarPage.getDsoBasePrice().should('be.visible').clear().type(listingDetails.updatedListingBasePrice);
       multiCalendarPage.getCustomPriceReason().clear().type(listingDetails.updatedDsoReason);
       multiCalendarPage.getUpdateDsoButton().click();
+      cy.wait('@addCustomPricing').its('response.statusCode').should('eq', HttpStatus.OK);
       cy.get('body').then(($body) => {
         if ($body.find('.css-bxak8j').length > 0) {
             multiCalendarPage.getOverrideUpdateButton().click();
@@ -85,11 +96,15 @@ describe("MultiCalendar DSO Tests", () => {
       navigationTab.dynamicPricingButton().should('be.visible').click();
       navigationTab.calenderViewButton().should('be.visible').click();
       cy.url().should('include', Urls.MULTI_CALENDAR);
+      cy.log('Multi-Calendar page opened');
+
       multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
       cy.wait(5000);
+      cy.intercept('POST', ApiEndpoints.ADD_CUSTOM_PRICING).as('removeCustomPricing');
       multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('be.visible').click();
       multiCalendarPage.getDsoModalTitle().should('be.visible');
       multiCalendarPage.getDeleteDsoButton().click();
+      cy.wait('@removeCustomPricing').its('response.statusCode').should('eq', HttpStatus.OK);
       multiCalendarPage.getDsoPriceDetails('Shreyas Jadhav').should('not.exist');
       cy.log('DSO removed successfully, test completed');
     });
