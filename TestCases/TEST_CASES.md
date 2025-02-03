@@ -330,6 +330,3 @@
 - Push price status test is currently skipped (marked with it.skip)
 - All responses should be in JSON format
 - Error handling and negative test cases should be added in future iterations
-
-
-I've converted the document to a comprehensive Markdown format, preserving all the original information and maintaining a clear, structured hierarchy of test cases and scenarios.
