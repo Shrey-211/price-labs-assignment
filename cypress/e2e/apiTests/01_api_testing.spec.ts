@@ -1,18 +1,19 @@
+import { ApiEndpoints, HttpStatus, RequestType } from "cypress/support/utility";
 
 let authToken: string;
 
 beforeEach(() => {
     cy.log('login in to get tokens')
     cy.request({
-        method: 'POST',
-        url: 'https://api.novu.co/v1/widgets/session/initialize', 
+        method: RequestType.POST,
+        url: ApiEndpoints.LOGIN, 
         body: {
             applicationIdentifier: 'jioeUUYx3h8p',
             subscriberId: '123641',
             hmacHash: null
             }
         }).then((response) => {
-            expect(response.status).to.eq(201);
+            expect(response.status).to.eq(HttpStatus.CREATED);
             expect(response.body).to.have.property('data');
             expect(response.body.data).to.have.property('token');
             authToken = response.body.data.token;
@@ -39,14 +40,14 @@ describe('API Tests', () => {
 
     it('should successfully fetch organization details', () => {
         cy.request({
-            method: 'GET',
-            url: 'https://api.novu.co/v1/widgets/organization',
+            method: RequestType.GET,
+            url: ApiEndpoints.ORGANIZATION,
             headers: {
                 Authorization: `Bearer ${authToken}`,
                 Accept: 'application/json, text/plain, */*'
             }
         }).then((response) => {
-            expect(response.status).to.eq(200);
+            expect(response.status).to.eq(HttpStatus.OK);
             expect(response.body).to.have.property('data');
             expect(response.body.data).to.have.property('_id', '66032532f43359bff28c011f');
             expect(response.body.data).to.have.property('name', 'PriceLabs');
@@ -59,14 +60,14 @@ describe('API Tests', () => {
 
     it('should successfully fetch unseen', () => {
         cy.request({
-            method: 'GET',
-            url: 'https://api.novu.co/v1/widgets/notifications/unseen?limit=100',
+            method: RequestType.GET,
+            url: ApiEndpoints.UNSEEN,
             headers: {
                 Authorization: `Bearer ${authToken}`,
                 Accept: 'application/json, text/plain, */*'
             }
         }).then((response) => {
-            expect(response.status).to.eq(200);
+            expect(response.status).to.eq(HttpStatus.OK);
             expect(response.body).to.have.property('data');
             expect(response.body.data).to.have.property('count',0);
         });
@@ -74,14 +75,14 @@ describe('API Tests', () => {
 
     it('should successfully fetch seen', () => {
         cy.request({
-            method: 'GET',
-            url: 'https://api.novu.co/v1/widgets/notifications/unread?limit=100',
+            method: RequestType.GET,
+            url: ApiEndpoints.UNREAD,
             headers: {
                 Authorization: `Bearer ${authToken}`,
                 Accept: 'application/json, text/plain, */*'
             }
         }).then((response) => {
-            expect(response.status).to.eq(200);
+            expect(response.status).to.eq(HttpStatus.OK);
             expect(response.body).to.have.property('data');
             expect(response.body.data).to.have.property('count',1);
         });

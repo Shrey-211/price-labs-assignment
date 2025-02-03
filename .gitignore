@@ -6,6 +6,7 @@ cypress/videos/
 cypress/screenshots/
 cypress/reports/
 allure-report
+allure-results
 
 # Environment variables
 .env

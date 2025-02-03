@@ -4,7 +4,7 @@ import { ListingDetails } from 'cypress/fixtures/listingDetails/listing_details.
 import { ListingInvalidDetails } from 'cypress/fixtures/listingDetails/invalid_listing_details.interface';
 import { MultiCalendarPage } from 'cypress/pageObjects/multiCalenderPage/multiCalenderPage.page';
 import { visitPriceLabs } from 'cypress/support/index';
-import { ApiEndpoints, HttpStatus, Utility } from 'cypress/support/utility';
+import { ApiEndpoints, HttpStatus, Urls, Utility } from 'cypress/support/utility';
 import { NavigationTab } from 'cypress/pageObjects/navigationTab/navigationTab.page';
 
 let listingDetails: ListingDetails
@@ -31,14 +31,22 @@ beforeEach(() => {
 
 describe("MultiCalendar DSO Negative Test Flows", () => {
     it("should not allow a user to apply a Date-Specific Override (DSO) with negative values", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
+        cy.url().should('include', Urls.MULTI_CALENDAR);
+        cy.log('Multi-Calendar page opened');
+
+        // Searching for desired listing
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
         multiCalendarPage.getMoreVertIcon().should('be.visible').click();
         multiCalendarPage.getAddOverrideButton().should('be.visible').click();
         multiCalendarPage.getDsoModalTitle().should('be.visible');
+        cy.log('DSO tab opened');
+
+        // Applying negative values
         multiCalendarPage.getDsoFinalPrice().should('be.visible').type(ListingInvalidDetails.listingFinalPrice); // input the negative value
         multiCalendarPage.getStayRestrictionsHeader().should('be.visible').click(); // click outside the input field
         multiCalendarPage.getDsoFinalPrice().invoke('val').should('be.empty'); // check if the input field is empty
@@ -63,8 +71,13 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
     });
 
     it("should not allow a user to sync when sync toggle is disable", () => {
+        cy.url().should('include', Urls.PRICING);
         navigationTab.dynamicPricingButton().should('be.visible').click();
         navigationTab.calenderViewButton().should('be.visible').click();
+        cy.url().should('include', Urls.MULTI_CALENDAR);
+        cy.log('Multi-Calendar page opened');
+
+        // searching for the listing
         multiCalendarPage.getSearchBar().should('be.visible').type(listingDetails.listingName);
         cy.wait(5000);
         multiCalendarPage.getFilteredProperty().should('be.visible');
@@ -81,7 +94,7 @@ describe("MultiCalendar DSO Negative Test Flows", () => {
 });
 
 after(() => {
-    // enable sync toggle
+    // enable sync toggle to reset the environment
     cy.intercept('POST', ApiEndpoints.TOGGLE_STATUS).as('toggleStatus'); // Intercepts API call to verify sync button status
     multiCalendarPage.getSyncToggle().should('be.visible').click();     
     cy.wait('@toggleStatus').its('response.statusCode').should('eq', HttpStatus.OK);
